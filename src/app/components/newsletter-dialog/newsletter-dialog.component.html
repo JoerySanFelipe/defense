@@ -1,0 +1,65 @@
+<div class="modal-header bg-success text-white">
+  <h5 class="modal-title text-center">Create Newsletter</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="m-3">
+    <div class="post-container">
+      <div class="input-group mb-3">
+        <textarea
+          #myTextarea
+          [(ngModel)]="textAreaContent"
+          (input)="onInput($event)"
+          class="form-control border-0 expanding-textarea"
+        ></textarea>
+      </div>
+    </div>
+
+    <img
+      #previewImage
+      src="#"
+      class="mb-3"
+      alt="Selected Image"
+      style="display: none; width: 100%"
+    />
+  </div>
+
+  <div class="modal-footer m-0">
+    <div class="custom-file-upload">
+      <label for="fileInput" class="custom-file-upload-label">
+        <i class="fa-solid fa-paperclip"></i
+      ></label>
+      <input
+        type="file"
+        id="fileInput"
+        class="custom-file-input"
+        (change)="handleFileUpload($event)"
+      />
+    </div>
+    <button
+      (click)="submitNewsletter()"
+      class="btn btn-success w-100 m-0"
+      [disabled]="
+        (loadingService.isLoading('newsletter') | async) === true ||
+        textAreaContent === ''
+      "
+    >
+      <span
+        *ngIf="(loadingService.isLoading('newsletter') | async) === true"
+        class="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      {{
+        (loadingService.isLoading("newsletter") | async) === true
+          ? "Saving Newsletter..."
+          : "Create Newsletter"
+      }}
+    </button>
+  </div>
+</div>

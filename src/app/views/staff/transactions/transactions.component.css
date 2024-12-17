@@ -1,0 +1,202 @@
+/* Adjustments for the overall container */
+.container-fluid {
+  padding: 10px;
+}
+
+/* Heading styles */
+h5 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Styling for the active tab */
+.nav-link.active {
+  background-color: darkred;
+  color: #fff;
+}
+
+/* Styling for the inactive tabs */
+.nav-link:not(.active) {
+  color: darkred;
+  background-color: #efeded;
+}
+
+/* Styling for the empty tab-pane */
+.tab-pane.fade {
+  padding: 20px;
+  text-align: center;
+  color: #6c757d;
+}
+
+/* Styling for the tab-content */
+.tab-content {
+  height: calc(100vh - 72px);
+  min-height: 82vh;
+}
+
+/* Tools Section */
+.tools-button {
+  display: flex;
+  justify-content: flex-end; /* Adjusted to end */
+}
+
+.tools-search {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+.title-tools {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.date-picker,
+.search-bar {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  color: #6c757d;
+}
+
+.search-input-container {
+  display: flex;
+  width: 100%;
+  font-size: 14px;
+}
+
+.search-input,
+.date-input {
+  flex: 1; /* Distribute remaining space equally among the input and button */
+  height: 40px;
+  font-size: 14px;
+  color: #6c757d;
+  border-radius: 4px;
+  border: 0.1px solid rgba(0, 0, 0, 0.1);
+  background-color: #f2f2f2;
+}
+
+.search-bar button {
+  border: 1px solid #6c757d;
+  height: 40px;
+  width: 185px; /* Adjust the width of the button as needed */
+}
+
+.date-picker h1,
+.search-bar h1 {
+  align-self: flex-start; /* Align titles to the start of the container */
+}
+
+/* Styling for the overall table */
+.recordsTable table {
+  width: 100%;
+}
+
+.table {
+  border-top: 0.1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
+}
+
+.table th,
+.recordsTable td {
+  padding: 8px;
+  text-align: start;
+}
+
+.recordsTable th {
+  font-weight: bold;
+}
+
+.recordsTable table th:first-child,
+.recordsTable table td:first-child {
+  text-align: left;
+}
+
+.recordsTable table th:first-child {
+  margin-right: 20px;
+}
+
+/* Styling for buttons */
+.btn-outline-secondary.view-transaction:hover {
+  color: white;
+  background-color: darkred;
+}
+
+.btn-outline-secondary.export-excel {
+  margin-right: 10px;
+}
+
+.btn-outline-secondary.export-excel:hover {
+  background-color: #28a745;
+  color: white;
+  margin-right: 10px;
+}
+
+.btn-outline-secondary.export-pdf:hover {
+  background-color: darkred;
+  color: white;
+}
+
+.btn-outline-secondary.search:hover {
+  background-color: darkred;
+  color: white;
+}
+
+/* Container for tabs and cashier name */
+.containerTabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Navigation tabs */
+.nav-tabs {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cashierName {
+  background-color: darkred;
+  height: 40px;
+  color: white;
+  font-size: 16px;
+  padding: 5px;
+  border: none;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}

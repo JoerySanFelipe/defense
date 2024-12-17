@@ -1,0 +1,112 @@
+<div class="container-fluid p-3">
+  <div class="d-flex align-items-center justify-content-between p-3">
+    <div ngbDropdown>
+      <button
+        type="button"
+        class="btn btn-lg btn-outline-secondary"
+        id="dropdownConfig"
+        ngbDropdownToggle
+      >
+        Generate Report
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="w-100">
+        <button ngbDropdownItem (click)="printTransaction(0, 'Pending')">
+          Pending
+        </button>
+        <button ngbDropdownItem (click)="printTransaction(1, 'Cancelled')">
+          Cancelled
+        </button>
+        <button ngbDropdownItem (click)="printTransaction(2, 'Accepted')">
+          Accepted
+        </button>
+        <button ngbDropdownItem (click)="printTransaction(3, 'To Deliver')">
+          To Deliver
+        </button>
+        <button ngbDropdownItem (click)="printTransaction(4, 'Pick up')">
+          Pick Up
+        </button>
+        <button
+          ngbDropdownItem
+          (click)="printTransaction(5, 'Out of Delivery')"
+        >
+          Out of Delivery
+        </button>
+        <button ngbDropdownItem (click)="printTransaction(6, 'Failed')">
+          Failed
+        </button>
+        <button ngbDropdownItem (click)="printTransaction(7, 'Completed')">
+          Completed
+        </button>
+
+        <div class="dropdown-divider"></div>
+        <button ngbDropdownItem (click)="printByType(0, 'Walk In')">
+          Walk in
+        </button>
+        <button ngbDropdownItem (click)="printByType(1, 'Pick Up')">
+          Pick up
+        </button>
+        <button ngbDropdownItem (click)="printByType(2, 'Delivery')">
+          Delivery
+        </button>
+      </div>
+    </div>
+
+    <div class="input-group w-25">
+      <input
+        type="text"
+        class="search-input w-100"
+        placeholder="Search invoice id here..."
+        [(ngModel)]="searchText"
+        (input)="search()"
+      />
+    </div>
+  </div>
+
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th>Invoice No.</th>
+        <!-- <th>Customer</th> -->
+        <th>Product</th>
+        <th>Order Value</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Loop through recent transactions -->
+      <tr
+        *ngFor="let element of filteredTransactions$"
+        (click)="navigateToViewTransaction(element.id)"
+      >
+        <td>{{ element.id }}</td>
+        <!-- <td>
+          <p>{{ "---" }}</p>
+        </td> -->
+        <td>
+          <!-- Loop through orderList to display all products -->
+          <ng-container
+            *ngFor="let orderItem of element.orderList; let last = last"
+          >
+            <p>
+              {{ orderItem.productName || "---" }} x
+              {{ orderItem.quantity || 0 }}
+            </p>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container
+            *ngIf="element.orderList && element.orderList.length > 0"
+          >
+            <!-- Calculate total order value -->
+            <p>
+              {{
+                calculateTotalOrderValue(element.orderList) | currency : "PHP"
+              }}
+            </p>
+          </ng-container>
+        </td>
+        <td>{{ convertTimestamp(element.createdAt) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

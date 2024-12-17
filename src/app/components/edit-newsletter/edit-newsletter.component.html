@@ -1,0 +1,47 @@
+<div class="modal-header">Edit Newsletter</div>
+
+<div class="modal-body">
+  <div class="post-container">
+    <div class="input-group mb-3">
+      <textarea
+        [(ngModel)]="letter$"
+        class="form-control border-0 expanding-textarea"
+        rows="4"
+      ></textarea>
+    </div>
+    <img
+      *ngIf="imageDisplay$ !== null"
+      [src]="imageDisplay$"
+      class="mb-3"
+      alt="Selected Image"
+      style="width: 100%"
+    />
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div class="custom-file-upload">
+    <label for="fileInput" class="custom-file-upload-label">
+      <i class="fa-solid fa-paperclip"></i
+    ></label>
+    <input
+      type="file"
+      id="fileInput"
+      class="custom-file-input"
+      (change)="onSelectImage($event)"
+    />
+  </div>
+  <button class="btn btn-success w-100 m-0" (click)="saveNewsletter()">
+    <span
+      *ngIf="(loadingService.isLoading('newsletter') | async) === true"
+      class="spinner-border spinner-border-sm me-2"
+      role="status"
+      aria-hidden="true"
+    ></span>
+    {{
+      (loadingService.isLoading("newsletter") | async) === true
+        ? "Saving Newsletter..."
+        : "Edit Newsletter"
+    }}
+  </button>
+</div>

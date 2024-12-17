@@ -1,0 +1,50 @@
+<div class="modal-header bg-success py-2">
+  <h1 class="modal-title fs-5 text-light">Select Purchase Type</h1>
+</div>
+<div class="modal-body">
+  <div class="d-flex flex-column align-items-center gap-3 w-100">
+    <p class="mb-0 text-center">How will the customer purchase this product?</p>
+    <div class="d-flex justify-content-center gap-3 w-100">
+      <!-- Unit-Based Button -->
+      <button
+        class="btn btn-outline-success px-3 py-2 d-flex align-items-center justify-content-center"
+        [ngClass]="{ 'btn-success text-light': selectedOption === 'Unit-Based' }"
+        style="width: 190px;"
+        (click)="selectOption('Unit-Based')"
+      >
+        <i class="bi bi-box-seam" [ngClass]="{ 'text-light': selectedOption === 'Unit-Based' }"></i>
+        <span class="ms-2">Unit-Based</span>
+      </button>
+
+      <!-- Weight-Based Button -->
+      <button
+        class="btn btn-outline-success px-3 py-2 d-flex align-items-center justify-content-center"
+        [ngClass]="{ 'btn-success text-light': selectedOption === 'Weight-Based' }"
+        style="width: 190px;"
+        [disabled]="!product.weightPricing || !product.weightPricing.weight || !product.weightPricing.kgPrice"
+        (click)="selectOption('Weight-Based')"
+      >
+        <i class="bi bi-speedometer2" [ngClass]="{ 'text-light': selectedOption === 'Weight-Based' }"></i>
+        <span class="ms-2">Weight-Based</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="modal-footer py-2">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.dismiss()"
+  >
+    Cancel
+  </button>
+  <button
+    type="button"
+    class="btn btn-outline-success"
+    [ngClass]="{ 'btn-success text-light': selectedOption }"
+    [disabled]="!selectedOption"
+    (click)="onSelectOption()"
+  >
+    Select
+  </button>
+</div>

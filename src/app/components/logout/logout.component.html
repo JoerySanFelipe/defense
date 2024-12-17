@@ -1,0 +1,29 @@
+<div class="modal-header bg-danger">
+  <h1 class="modal-title fs-5 text-white" id="driverLabel">Logout</h1>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+    (click)="activeModal.close()"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <p>Are you sure you want to logout?</p>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn" (click)="activeModal.close()">
+    cancel
+  </button>
+  <button
+    type="button"
+    class="btn btn-outline-danger"
+    (click)="logout()"
+    data-bs-toggle="modal"
+    data-bs-target="#logoutModal"
+  >
+    Logout
+  </button>
+</div>

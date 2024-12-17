@@ -1,0 +1,235 @@
+<div class="container-fluid d-flex flex-column h-100 gap-3 p-3">
+  <div class="containers p-3">
+    <h5><b>Audit Logs</b></h5>
+
+    <!--Export and button upper-->
+    <div class="row">
+      <div class="col">
+        <h6 class="label">Audit No.</h6>
+        <div class="row">
+          <input
+            class="search-input"
+            type="text"
+            [(ngModel)]="auditNoFilter"
+            (input)="onAuditNoInputChange()"
+            placeholder="Enter audit no..."
+          />
+        </div>
+      </div>
+      <div class="col">
+        <h6 class="label">Email</h6>
+        <div class="row">
+          <input
+            class="search-input"
+            type="text"
+            [(ngModel)]="emailFilter"
+            (input)="onEmailInputChange()"
+            placeholder="Enter email..."
+          />
+        </div>
+      </div>
+      <div class="col">
+        <h6 class="label">Role</h6>
+        <div class="row">
+          <select
+            class="search-input"
+            [(ngModel)]="selectedRole"
+            (change)="onRoleChange()"
+          >
+            <option value="null">All Roles</option>
+            <option *ngFor="let role of roles" [value]="role">
+              {{ role }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <h6 class="label"></h6>
+        <div class="row">
+          <button
+            type="button"
+            class="btn btn-outline-secondary dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-download"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"
+              />
+              <path
+                d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
+              /></svg
+            >Export as
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item excel-export" (click)="exportToExcel()"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                class="bi bi-filetype-xls"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM6.472 15.29a1.176 1.176 0 0 1-.111-.449h.765a.578.578 0 0 0 .254.384c.07.049.154.087.25.114.095.028.202.041.319.041.164 0 .302-.023.413-.07a.559.559 0 0 0 .255-.193.507.507 0 0 0 .085-.29.387.387 0 0 0-.153-.326c-.101-.08-.255-.144-.462-.193l-.619-.143a1.72 1.72 0 0 1-.539-.214 1.001 1.001 0 0 1-.351-.367 1.068 1.068 0 0 1-.123-.524c0-.244.063-.457.19-.639.127-.181.303-.322.527-.422.225-.1.484-.149.777-.149.305 0 .564.05.78.152.216.102.383.239.5.41.12.17.186.359.2.566h-.75a.56.56 0 0 0-.12-.258.625.625 0 0 0-.247-.181.923.923 0 0 0-.369-.068c-.217 0-.388.05-.513.152a.472.472 0 0 0-.184.384c0 .121.048.22.143.3a.97.97 0 0 0 .405.175l.62.143c.217.05.406.12.566.211a1 1 0 0 1 .375.358c.09.148.135.335.135.56 0 .247-.063.466-.188.656a1.216 1.216 0 0 1-.539.439c-.234.105-.52.158-.858.158-.254 0-.476-.03-.665-.09a1.404 1.404 0 0 1-.478-.252 1.13 1.13 0 0 1-.29-.375Zm-2.945-3.358h-.893L1.81 13.37h-.036l-.832-1.438h-.93l1.227 1.983L0 15.931h.861l.853-1.415h.035l.85 1.415h.908L2.253 13.94l1.274-2.007Zm2.727 3.325H4.557v-3.325h-.79v4h2.487v-.675"
+                /></svg
+              >Excel</a
+            >
+            <a class="dropdown-item export-pdf" (click)="exportToPdf()"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                class="bi bi-filetype-pdf"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z"
+                /></svg
+              >PDF</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Search bar and button bottom-->
+    <div class="row">
+      <div class="col">
+        <h6 class="label">Component</h6>
+        <div class="row">
+          <select
+            class="search-input"
+            [(ngModel)]="selectedComponent"
+            (change)="onRoleChange()"
+          >
+            <option value="null">All Components</option>
+            <option *ngFor="let component of components" [value]="component">
+              {{ component }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action Dropdown -->
+      <div class="col">
+        <h6 class="label">Action</h6>
+        <div class="row">
+          <select
+            class="search-input"
+            [(ngModel)]="selectedAction"
+            (change)="onRoleChange()"
+          >
+            <option value="null">All Actions</option>
+            <option *ngFor="let action of actions" [value]="action">
+              {{ action }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <h6 class="label">Timestamp</h6>
+        <div class="row">
+          <input class="search-input" type="text" />
+        </div>
+      </div>
+      <div class="col">
+        <h6 class="label"></h6>
+        <div class="row">
+          <button
+            mat-button
+            class="btn btn-outline-secondary search"
+            (click)="refreshData()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-arrow-clockwise"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"
+              />
+              <path
+                d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"
+              /></svg
+            >Refresh
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Table-->
+  <div class="containers p-3">
+    <div class="recordsTable">
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th>Audit No.</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Component</th>
+            <th>Action</th>
+            <th>Timestamp</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let audit of displayedAuditLog">
+            <!-- audit no.-->
+            <td>{{ audit.id }}</td>
+            <!-- user-name -->
+            <td>{{ audit.email }}</td>
+            <!-- role -->
+            <td>{{ audit.role }}</td>
+            <!-- component-->
+            <td>{{ audit.component }}</td>
+            <!-- action -->
+            <td>{{ audit.action }}</td>
+            <!-- timestamp-->
+            <td>{{ audit.timestamp.toLocaleDateString() }}</td>
+            <!-- view -->
+            <td>
+              <button
+                class="btn btn-outline-secondary view-transaction"
+                (click)="viewAudit(audit)"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-eye"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"
+                  />
+                  <path
+                    d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"
+                  />
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

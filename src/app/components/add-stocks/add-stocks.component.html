@@ -1,0 +1,64 @@
+<div class="modal-header bg-dark">
+  <h1 class="modal-title fs-5 text-light" id="driverLabel">Add Stocks</h1>
+</div>
+<div class="modal-body">
+  <div
+    class="d-flex flex-column align-items-center gap-2 w-100"
+    *ngIf="product"
+  >
+    <h5 class="">New Stocks for {{ product.name }}</h5>
+    <div
+      class="form-floating mb-2 w-100"
+      *ngIf="product.variations.length === 0"
+    >
+      <input
+        type="number"
+        class="form-control"
+        [id]="product.id"
+        (input)="updateProductStocks($event)"
+        placeholder="{{ product.name }}"
+      />
+      <label [for]="product.id">{{ product.name }}</label>
+    </div>
+    <div class="w-100" *ngFor="let variation of variations$; index as index">
+      <div class="form-floating mb-2">
+        <input
+          type="number"
+          class="form-control"
+          [id]="variation.id"
+          (input)="updateVariationStock(index, $event)"
+          placeholder="{{ variation.name }}"
+        />
+        <label [for]="variation.id">{{ variation.name }}</label>
+      </div>
+    </div>
+
+    <div class="form-floating mb-2 w-100">
+      <input
+        type="date"
+        class="form-control"
+        id="expiration"
+        placeholder="Expiration"
+        (input)="handleExpirationDateInput($event)"
+      />
+      <label for="expiration">Expiration</label>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    data-bs-dismiss="modal"
+    (click)="activeModal.close()"
+  >
+    Cancel
+  </button>
+  <button
+    class="btn btn-dark"
+    (click)="saveStocks()"
+    [disabled]="!expirationDate"
+  >
+    Save Stocks
+  </button>
+</div>

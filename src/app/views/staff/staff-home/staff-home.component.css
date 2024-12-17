@@ -1,0 +1,134 @@
+.nav-pills li a {
+  background-color: white;
+  color: darkred;
+  margin-right: 10px;
+  border-radius: 10px;
+}
+.nav-pills .nav-link.active {
+  background-color: darkred;
+  color: white;
+}
+
+.tab-content {
+  border-radius: 10px;
+  padding: 1rem;
+}
+.nav-pills:hover {
+  cursor: pointer;
+}
+
+/* 
+//example */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.child-container {
+  width: 300px;
+  height: 300px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.image-container {
+  width: 100%;
+  height: 60%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+#product-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit the text to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card {
+  width: 300px;
+  height: 200px;
+  background-color: white;
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.3s;
+  overflow: hidden;
+}
+
+/* Style for the card content */
+.card-content {
+  padding: 20px;
+}
+
+/* Hover effect */
+.card:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#order-container {
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  flex: 1;
+  background-color: white;
+}
+
+/* Added */
+.quantity-input {
+  max-width: 4rem; /* Adjust the width as needed */
+}
+
+/* Remove spinner arrows for number inputs */
+.quantity-input::-webkit-inner-spin-button,
+.quantity-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.custom-modal-size {
+  max-width: 100%;
+  width: auto !important;
+}
+
+.custom-modal-content {
+  height: 400px;
+  overflow: hidden;
+}
+
+
+.dropdown-menu {
+  position: absolute;
+  z-index: 1050;  /* Make sure it's higher than other elements */
+}
+
+
+/* Style for the cart title */
+.title-cart {
+  font-size: 1.50rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+/* Style for the cart icon */
+.cart-icon {
+  background-color: #8B0000; /* Dark red background */
+  color: white;
+  border-radius: 10%;
+  padding: 10px;
+  font-size: 1.5rem; /* Make the icon bigger */
+}
+
+/* Optional: style for the icon when it is hovered */
+.cart-icon:hover {
+  background-color: #B22222; /* Lighter dark red when hovered */
+}

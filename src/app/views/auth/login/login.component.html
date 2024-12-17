@@ -1,0 +1,73 @@
+<div class="container-fluid vh-100">
+  <div
+    class="d-flex flex-column align-items-center justify-content-center h-100 gap-3"
+  >
+    <img src="../../../../assets/images/logo.png" />
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-floating mb-3">
+        <input
+          type="email"
+          [ngClass]="
+            loginForm.get('email')?.invalid ? 'is-invalid' : 'form-control'
+          "
+          class="form-control"
+          id="email"
+          formControlName="email"
+          placeholder="name@example.com"
+        />
+        <label for="floatingInput">Email</label>
+
+        <div
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+          class="invalid-feedback"
+        >
+          Please enter a valid email address.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+          id="password"
+          [ngClass]="
+            loginForm.get('password')?.invalid ? 'is-invalid' : 'form-control'
+          "
+        />
+        <label for="floatingInput">Password</label>
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+          class="invalid-feedback"
+        >
+          Password must be at least 6 characters long.
+        </div>
+      </div>
+      <app-forgot-password></app-forgot-password>
+      <button
+        class="btn btn-danger btn-lg w-100"
+        type="submit"
+        [disabled]="
+          (loadingService.isLoading('login') | async) === true ||
+          loginForm.invalid
+        "
+      >
+        <span
+          *ngIf="(loadingService.isLoading('login') | async) === true"
+          class="spinner-border spinner-border-sm me-2"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        {{
+          (loadingService.isLoading("login") | async) === true
+            ? "Logging In..."
+            : "Login"
+        }}
+      </button>
+    </form>
+  </div>
+</div>

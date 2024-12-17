@@ -1,0 +1,330 @@
+<!-- copy and paste the entire code -->
+<div class="container-fluid d-flex flex-column h-100 gap-3 p-3">
+  <!-- update ui - Joery -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="containers p-3 categ-count">
+          <div class="row">
+            <h2>
+              <b>{{ productCalculator.countCategories() }}</b>
+            </h2>
+          </div>
+          <div class="row">
+            <h5>Categories</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="containers p-3 product-count">
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <h2>
+                  <b>{{ productCalculator.getTotalProductCount() }}</b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Products</h5>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <h2 class="plus-sign">
+                  <b>+ {{ productCalculator.getCountOfProductsLast7Days() }}</b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Last 7 days</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="containers p-3 stock-count">
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <h2>
+                  <b>{{ productCalculator.countProductsBelowStockAlert() }}</b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Low in stock</h5>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <h2>
+                  <b>{{ productCalculator.countProductsNoStocks() }}</b>
+                </h2>
+              </div>
+              <h5>Out of stock</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END updated UI -->
+
+  <!-- Charts -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="containers p-3">
+          <div class="d-flex align-items-center justify-content-between">
+            <h5><b>Category Stocks</b></h5>
+          </div>
+          <div id="category-stocks" style="width: 750px; height: 400px"></div>
+          <!-- changed to pie chart -->
+        </div>
+      </div>
+      <div class="col">
+        <div class="containers p-3">
+          <h5><b>Product Availability</b></h5>
+          <div
+            id="product-availability"
+            style="width: 750px; height: 400px"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END of Charts -->
+
+  <div class="containers p-3 h-100 d-flex flex-column">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <div class="input-group w-25">
+        <input
+          type="text"
+          class="search-input w-100"
+          placeholder="Search product name or category..."
+          [(ngModel)]="searchText"
+          (input)="search()"
+        />
+      </div>
+      <div class="d-flex gap-2">
+        <button
+          class="btn btn-primary"
+          [routerLink]="['/' + getUserType() + '/add-product']"
+        >
+          Add Product
+        </button>
+
+        <div ngbDropdown class="d-inline-block">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            id="dropdownBasic1"
+            ngbDropdownToggle
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-filter me-3"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"
+              />
+            </svg>
+            Filters
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem (click)="refreshProducts()">
+              Date Modified
+            </button>
+            <button ngbDropdownItem (click)="applyFilter('inStock')">
+              In Stock
+            </button>
+            <button ngbDropdownItem (click)="applyFilter('lowStock')">
+              Low In Stock
+            </button>
+            <button ngbDropdownItem (click)="applyFilter('outOfStock')">
+              Out of stock
+            </button>
+            <button ngbDropdownItem (click)="applyFilter('toBeExpired')">
+              To Expire
+            </button>
+
+            <button ngbDropdownItem (click)="applyFilter('expired')">
+              Expired
+            </button>
+          </div>
+        </div>
+        <!-- Dropdown for filters -->
+
+
+        <!-- Dropdown for export options -->
+
+        <div ngbDropdown class="d-inline-block">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            id="dropdownBasic1"
+            ngbDropdownToggle
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-file-earmark-arrow-down me-3"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293z"
+              />
+              <path
+                d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"
+              />
+            </svg>
+            Export as
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button ngbDropdownItem (click)="exportToPdf()">PDF</button>
+            <button ngbDropdownItem (click)="exportToExcel()">Excel</button>
+          </div>
+        </div>
+
+        <!-- End of export dropdown -->
+      </div>
+    </div>
+
+    <div class="container-fluid flex-grow-1 overflow-auto">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Category</th>
+            <th scope="col">Price</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Availability</th>
+            <th scope="col">Visibility</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Loop through products -->
+          <ng-container *ngFor="let product of filteredProducts applyy sort here directly to ensure when page load it is sorted promptly sortFilteredProducts()">
+            <!-- If the product has variations -->
+            <ng-container *ngIf="product.variations.length > 0; else noVariations">
+              <!-- Loop through variations of the product -->
+              <ng-container *ngFor="let variation of product.variations">
+                <tr [id]="variation.id" (click)="viewProduct(product)">
+                  <th scope="row">{{ product.name + ' - ' + variation.name }}</th>
+                  <td>{{ product.category }}</td>
+                  <td>
+                    {{ variation.price.toLocaleString('en-us', { style: 'currency', currency: 'PHP' }) }}
+                  </td>
+                  <td>{{ variation.stocks }}</td>
+                  <td>
+                    <div *ngIf="isExpired(product)">
+                      <span class="badge bg-danger">Expired</span>
+                    </div>
+                    <div *ngIf="isToBeExpired(product)">
+                      <span class="badge bg-info">To Expire</span>
+                    </div>
+                    <div *ngIf="!isExpired(product) && !isToBeExpired(product)">
+                      <span
+                        class="badge"
+                        [ngClass]="
+                          variation.stocks === 0
+                            ? 'bg-danger' 
+                            : variation.stocks > 0 && variation.stocks <= variation.stockAlert
+                              ? 'bg-warning'
+                              : 'bg-success'
+                        "
+                      >
+                        {{ variation.stocks === 0
+                            ? 'Out of Stock' 
+                            : variation.stocks > 0 && variation.stocks <= variation.stockAlert
+                              ? 'Low in Stock' 
+                              : 'In Stock' }}
+                      </span>
+                    </div>                    
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="product.isHidden ? 'text-bg-danger' : 'text-bg-warning'">
+                      {{ product.isHidden ? "Hidden" : "Visible" }}
+                    </span>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+    
+            <!-- If the product has no variations -->
+            <ng-template #noVariations>
+              <tr [id]="product.id" (click)="viewProduct(product)">
+                <th scope="row">{{ product.name }}</th>
+                <td>{{ product.category }}</td>
+                <td>
+                  {{ product.price.toLocaleString('en-us', { style: 'currency', currency: 'PHP' }) }}
+                </td>
+                <td>{{ product.stocks }}</td>
+                <td>
+                  <div *ngIf="isExpired(product)">
+                    <span class="badge bg-danger">Expired</span>
+                  </div>
+                  <div *ngIf="isToBeExpired(product)">
+                    <span class="badge bg-info">To Expire</span>
+                  </div>
+                  <div *ngIf="!isExpired(product) && !isToBeExpired(product)">
+                    <span
+                      class="badge"
+                      [ngClass]="
+                        product.stocks === 0
+                          ? 'bg-danger' 
+                          : product.stocks > 0 && product.stocks <= product.stockAlert
+                            ? 'bg-warning'
+                            : 'bg-success'
+                      "
+                    >
+                      {{ product.stocks === 0 
+                          ? 'Out of Stock' 
+                          : product.stocks > 0 && product.stocks <= product.stockAlert 
+                            ? 'Low in Stock' 
+                            : 'In Stock' }}
+                    </span>
+                  </div>                  
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="product.isHidden ? 'text-bg-danger' : 'text-bg-warning'">
+                    {{ product.isHidden ? "Hidden" : "Visible" }}
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>       
+    
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination
+        [collectionSize]="collectionSize"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        (pageChange)="refreshProducts()"
+      >
+      </ngb-pagination>
+
+      <!-- Select for changing page size -->
+      <select
+        class="form-select"
+        style="width: auto"
+        [(ngModel)]="pageSize"
+        (ngModelChange)="refreshProducts()"
+      >
+        <option [ngValue]="0"> All </option>
+        <option [ngValue]="10">10 items per page</option>
+        <option [ngValue]="20">20 items per page</option>
+        <option [ngValue]="30">30 items per page</option>
+      </select>
+      <!-- End of page size select -->
+    </div>
+  </div>
+</div>

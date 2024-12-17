@@ -1,0 +1,35 @@
+.card-body {
+  display: flex;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+.card-body .customer-container .convo-container {
+  height: 100%;
+}
+
+.customer-container {
+  display: flex;
+  overflow-y: auto; /* Change to auto to only show scrollbar when needed */
+  flex-direction: column;
+  max-height: 80vh; /* Set a maximum height */
+}
+
+.li:hover {
+  cursor: pointer;
+}
+.convo-container {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.admin-message {
+  background-color: red;
+}
+
+.user-message {
+  background-color: blue;
+}

@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h1 class="modal-title fs-5" id="driverLabel">Confirm Delete</h1>
+</div>
+<hr />
+<div class="modal-body">
+  <p class="text-center fw-bold">
+    {{ message }}
+  </p>
+</div>
+<hr />
+<div class="modal-footer">
+  <button class="btn btn-outline-secondary" (click)="activeModal.close('NO')">
+    Cancel
+  </button>
+  <button class="btn btn-danger" (click)="activeModal.close('YES')">
+    Delete
+  </button>
+</div>

@@ -1,0 +1,65 @@
+.box {
+  background-color: white;
+  border-radius: 10px;
+  position: relative;
+  width: 100%;
+  padding: 1rem;
+  margin: 10px;
+  height: 100%;
+}
+.col-8 {
+  padding: 1rem;
+}
+.col-4 {
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container img {
+  margin: 10px;
+}
+
+canvas {
+  height: 400px;
+}
+
+.critical-stocks {
+  background-color: red;
+}
+
+.low-stocks {
+  background-color: yellow;
+}
+
+.hoverable-text {
+  position: relative;
+  cursor: pointer;
+}
+
+.hover-card {
+  position: absolute;
+  top: 50%; /* Adjust based on your layout */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 250px;
+  z-index: 1000;
+  display: none;
+  text-align: left;
+  font-weight: normal; /* Ensure text inside the card is not bold */
+  font-size: 14px; /* Optional: Adjust font size if needed */
+  border-radius: 10px; /* Adds rounded corners */
+}
+
+
+.hoverable-text:hover .hover-card {
+  display: block;
+}

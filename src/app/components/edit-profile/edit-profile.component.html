@@ -1,0 +1,66 @@
+<div class="modal-header bg-dark">
+  <h1 class="modal-title fs-5 text-light" id="driverLabel">Edit Profile</h1>
+</div>
+<div class="modal-body">
+  <form [formGroup]="userForm$" (submit)="onSubmit()">
+    <div class="form-floating mb-3">
+      <input
+        class="form-control"
+        type="text"
+        id="name"
+        formControlName="name"
+      />
+      <label for="name">Enter Fullname</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input
+        class="form-control"
+        type="text"
+        id="address"
+        formControlName="address"
+      />
+      <label for="address">Enter Address</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input
+        class="form-control"
+        type="text"
+        id="phone"
+        formControlName="phone"
+      />
+      <label for="phone">Enter Phone</label>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-end gap-3">
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="activeModal.close()"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="btn btn-dark"
+        [disabled]="
+          (loadingService.isLoading('user') | async) === true ||
+          userForm$.invalid
+        "
+      >
+        <span
+          *ngIf="(loadingService.isLoading('user') | async) === true"
+          class="spinner-border spinner-border-sm me-2"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        {{
+          (loadingService.isLoading("user") | async) === true
+            ? "Saving user..."
+            : "Save user"
+        }}
+      </button>
+    </div>
+  </form>
+</div>

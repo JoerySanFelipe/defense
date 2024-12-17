@@ -1,0 +1,157 @@
+<div class="container-fluid flex-grow-1 p-3 overflow-hidden">
+  <div class="d-flex h-100 overflow-hidden" style="border-radius: 1rem">
+    <div
+      class="d-flex flex-column w-25 h-100 overflow-auto"
+      style="background-color: #aac9ff"
+    >
+      <div class="header p-3 w-100">
+        <h5>Messages</h5>
+        <div class="input-group w-100">
+          <input
+            type="text"
+            class="search-input w-100"
+            placeholder="Search customers..."
+            [(ngModel)]="searchText"
+            (input)="search()"
+          />
+        </div>
+      </div>
+      <div class="flex-grow-1">
+        <h6 class="p-3">Recent</h6>
+        <ul
+          class="list-group list-group-flush"
+          *ngFor="let chats of messages$; index as index"
+        >
+          <li
+            class="list-group-item"
+            [ngStyle]="{
+              'border-left': selectedConvo === index ? '1px solid red' : 'none',
+              'background-color':
+                selectedConvo === index
+                  ? 'rgba(240, 241, 243, 1)'
+                  : 'transparent',
+              transition: 'background-color 0.3s ease-in-out'
+            }"
+            (click)="selectConvo(index)"
+          >
+            <div class="d-flex gap-1 w-100">
+              <img
+                class="profile"
+                [src]="
+                  chats.customers.profile
+                    ? chats.customers.profile
+                    : './../../assets/images/profile_placeholder.jpg'
+                "
+                width="50px"
+                height="50px"
+                alt="profile"
+              />
+              <div class="flex-grow-1">
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="flex-grow-1 fw-bold">
+                    {{ chats.customers.name || "no-name" }}
+                  </h6>
+                  <p>
+                    {{ formatTimestamp(
+                    getLastMessages(chats.messages)?.createdAt ?? null ) }}
+                  </p>
+                </div>
+                <span class="text-secondary"
+                  >{{ getLastMessages(chats.messages)?.message || "no message
+                  yet " }}</span
+                >
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="convo-container h-100 overflow-auto bg-white flex-grow-1">
+      <p *ngIf="selectedConvo === -1" class="text-center">
+        No Conversation seleted
+      </p>
+
+      <div
+        class="shadow p-3 bg-body-tertiary sticky-top bg-white"
+        *ngIf="selectedConvo !== -1"
+      >
+        <img
+          [src]="
+            messages$[selectedConvo].customers.profile
+              ? messages$[selectedConvo].customers.profile
+              : './../../assets/images/profile.jpg'
+          "
+          class="profile2 me-3"
+        />
+        {{ messages$[selectedConvo].customers.name }}
+      </div>
+      <div
+        class="flex-grow-1 h-25 overflow-y-auto"
+        *ngIf="selectedConvo !== -1"
+      >
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item"
+            *ngFor="
+              let message of messages$[selectedConvo].messages;
+              index as index
+            "
+          >
+            <div
+              class="d-flex"
+              [style.justifyContent]="
+                message.role === 'STAFF' ? 'end' : 'start'
+              "
+            >
+              <div
+                class="bg-danger p-3 rounded text-white"
+                style="max-width: 200px"
+                *ngIf="message.senderID === users$?.id"
+              >
+                {{ message.message }}
+              </div>
+              <div
+                class="bg-primary p-3 rounded text-white"
+                style="max-width: 200px"
+                *ngIf="message.senderID !== users$?.id"
+              >
+                {{ message.message }}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="shadow p-3 bg-body-tertiary sticky-bottom bg-white"
+        *ngIf="selectedConvo !== -1"
+      >
+        <div class="input-group">
+          <input class="form-control search-input" #message />
+          <button
+            class="btn btn-outline-secondary"
+            (click)="
+              sendMessage(
+                message.value,
+                messages$[selectedConvo].customers.id,
+                selectedConvo
+              )
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-send-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

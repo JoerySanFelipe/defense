@@ -1,0 +1,221 @@
+<div class="container-fluid h-100 overflow-auto">
+  <div class="row w-100">
+    <div class="col-8">
+      <div class="box">
+        <h5 class="mb-3">Sales Overview</h5>
+
+        <div class="d-flex">
+
+          <!-- Sales -->
+          <div class="container">
+            <img src="../../../../assets/images/Sales.png" />
+            <span class="fw-bold text-secondary">
+              {{ formatPrice(_transactionCalculator.calculateTotalSales()) }}
+            </span>
+            <div class="hoverable-text">
+              <p class="text-secondary">Sales</p>
+              <div class=" text-secondary hover-card">
+                <p >The total sum of all sold products</p>
+                <p><i>Quantity Sold x Price per product</i></p>
+              </div>
+            </div>
+          </div>          
+
+          <!-- Revenue -->
+          <div class="container">
+            <img src="../../../../assets/images/Revenue.png" />
+            <span class="fw-bold text-secondary">
+              {{ formatPrice(_transactionCalculator.calculateTotalRevenue())}}
+            </span>
+            <div class="hoverable-text">
+              <p class="text-secondary">Revenue</p>
+              <div class=" text-secondary hover-card">
+                <p>Includes sales and additional income sources like fees.</p>
+                <p><i>Sales + Other Income</i></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cost -->
+          <div class="container">
+            <img src="../../../../assets/images/Cost.png" />
+            <span class="fw-bold text-secondary">
+              {{formatPrice(_productCalculator.getTotalProductCosts())}}
+              </span>
+            <div class="hoverable-text">
+              <p class="text-secondary">Cost</p>
+              <div class=" text-secondary hover-card">
+                <p>The total of all expenditures to produce and sell product.</p>
+                <p><i>Product Cost x Product Quantity</i></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profit -->
+          <div class="container">
+            <img src="../../../../assets/images/Profit.png" />
+            <span class="fw-bold text-secondary">
+              {{formatPrice(
+                _productCalculator.getTotalProductCosts() -
+                _transactionCalculator.calculateTotalRevenue() 
+              )}}
+            </span>
+            <div class="hoverable-text">
+              <p class="text-secondary">Profit</p>
+              <div class=" text-secondary hover-card">
+                <p>The possible earnings after deducting all costs from revenue.</p>
+                <p><i>Revenue - Total Costs</i></p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="box">
+        <h5 class="mb-3">Order Summary</h5>
+        <div class="d-flex">
+          <div class="container">
+            <img src="../../../../assets/images/Quantity.png" />
+            <span class="fw-bold text-secondary">{{ ongoing$.length }}</span>
+            <p class="text-secondary">Pending Orders</p>
+          </div>
+          <div class="container">
+            <img src="../../../../assets/images/way.png" />
+            <span class="fw-bold text-secondary">{{ completed$.length }}</span>
+            <p class="text-secondary">Accepted</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="box">
+        <h5 class="mb-3">Purchases Overview</h5>
+        <div class="d-flex">
+          <div class="container">
+            <img src="../../../../assets/images/purchase.png" />
+            <span class="fw-bold text-secondary">{{ pickUpLastSevenDays | async }}</span>
+            <p class="text-secondary">To Pick</p>
+          </div>
+          <div class="container">
+            <img src="../../../../assets/images/sales2.png" />
+            <span class="fw-bold text-secondary"> {{ deliveryLastSevenDays | async }}</span>
+            <p class="text-secondary">To Deliver</p>
+          </div>
+
+          <div class="container">
+            <img src="../../../../assets/images/Cancel.png" />
+            <span class="fw-bold text-secondary">{{
+              _transactionCalculator.countCancelledTransactions().length
+            }}</span>
+            <p class="text-secondary">Cancelled</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="box">
+        <h5 class="mb-3">Inventory Summary</h5>
+        <div class="d-flex">
+          <div class="container">
+            <img src="../../../../assets/images/Quantity.png" />
+            <span class="fw-bold text-secondary">{{
+              ALL_PRODUCTS.length
+            }}</span>
+            <p class="text-secondary">Total Products</p>
+          </div>
+          <div class="container">
+            <img src="../../../../assets/images/Categories.png" />
+            <span class="fw-bold text-secondary">{{ _lowStocks.length }}</span>
+            <p class="text-secondary">Low In Stocks</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="box">
+        <h5 class="mb-3">Sales & Purchases</h5>
+        <canvas
+          baseChart
+          style="max-height: 300px"
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [legend]="barChartLegend"
+        >
+        </canvas>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="box">
+        <h5 class="mb-3">Order Summary</h5>
+
+        <div id="category-stocks" style="width: 300px; height: 300px"></div>
+      </div>
+    </div>
+    <div class="col-8" style="max-height: 400px">
+      <div class="box">
+        <h5 class="mb-3">Top Selling Stock</h5>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Sold Quantity</th>
+              <th scope="col">Remaining Quantity</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let top of _transactionCalculator.calculateTopSellingStocks()
+              "
+              (click)="viewProduct(top.id)"
+            >
+              <th scope="row">{{ top.name }}</th>
+              <td>{{ top.soldQuantity }}</td>
+              <td>{{ countRemaining(top.name, _productItems) }}</td>
+              <td>{{ formatPrice(top.price) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-4" style="max-height: 400px">
+      <div class="box">
+        <h5 class="mb-3">Low Quantity Stocks</h5>
+        <ul class="list-group">
+          <li
+            class="list-group-item"
+            *ngFor="let items of _lowStocks"
+            (click)="viewProduct(items.productID)"
+          >
+            <div class="d-flex gap-2 p-1 w-100">
+              <div style="width: 50px; height: 50px">
+                <img
+                  [src]="items.image"
+                  class="rounded"
+                  alt="Product image"
+                  style="width: 50px; height: 50px"
+                />
+              </div>
+
+              <div class="d-flex w-100 flex-column gap-2">
+                <h5 class="card-title" id="product-title">
+                  {{ items.name }}
+                </h5>
+                <h5 class="card-text text-secondary">
+                  {{ getStocks(items.stocks) }} {{ items.stocks }}
+                </h5>
+              </div>
+              <div>
+                <span class="badge bg-danger"> LOW </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

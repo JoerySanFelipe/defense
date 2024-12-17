@@ -1,0 +1,12 @@
+export enum ComponentType {
+  TRANSACTION = 'TRANSACTION',
+  CONTENT_MANAGEMENT = 'CONTENT_MANAGEMENT',
+  INVENTORY = 'INVENTORY',
+}
+
+export enum ActionType {
+  CREATE = 'CREATE',
+  DELETE = 'DELETE',
+  UPDATE = 'UPDATE',
+  MODIFY = 'MODIFY',
+}

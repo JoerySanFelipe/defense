@@ -1,0 +1,135 @@
+<div class="container-fluid vh-100 p-3">
+  <div class="container-fluid bg-white border rounded p-3">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <h5>{{ products$?.name }}</h5>
+      <div class="d-flex gap-1">
+        <button class="btn btn-danger" (click)="showDeleteProduct(products$!)">
+          DELETE
+        </button>
+
+        <button
+          class="btn btn-outline-warning"
+          (click)="hideProduct(products$!.id, !products$!.isHidden)"
+        >
+          {{ products$?.isHidden ? "UNHIDE" : "HIDE" }}
+        </button>
+        <button
+          class="btn btn-outline-secondary"
+          (click)="editProduct(products$!)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-pencil"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
+            />
+          </svg>
+          EDIT
+        </button>
+
+        <button
+          *ngIf="products$?.featured == false"
+          class="btn btn-outline-success"
+          (click)="addToFeaturedProduct(products$!.id)"
+        >
+          ADD TO FEATURE PRODUCT
+        </button>
+
+        <button class="btn btn-dark" (click)="addNewStocks(products$!)">
+          Add Stocks
+        </button>
+
+        <button
+          *ngIf="products$?.featured == true"
+          class="btn btn-outline-danger"
+          (click)="removeFromFeaturedProduct(products$!.id)"
+        >
+          REMOVE FROM FEATURE PRODUCT
+        </button>
+      </div>
+    </div>
+    <!-- TABS -->
+    <nav>
+      <div class="nav nav-underline" id="nav-tab" role="tablist">
+        <button
+          class="nav-link active"
+          id="nav-overview-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#nav-overview"
+          type="button"
+          role="tab"
+          aria-controls="nav-overview"
+          aria-selected="true"
+        >
+          Overview
+        </button>
+        <button
+          class="nav-link"
+          id="nav-purchases-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#nav-purchases"
+          type="button"
+          role="tab"
+          aria-controls="nav-purchases"
+          aria-selected="false"
+        >
+          Purchases
+        </button>
+        <button
+          class="nav-link"
+          id="nav-adjustments-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#nav-adjustments"
+          type="button"
+          role="tab"
+          aria-controls="nav-adjustments"
+          aria-selected="false"
+        >
+          Adjustments
+        </button>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div
+        class="tab-pane fade show active"
+        id="nav-overview"
+        role="tabpanel"
+        aria-labelledby="nav-overview-tab"
+        tabindex="0"
+      >
+        <div *ngIf="products$ !== null">
+          <app-product-overview [product]="products$"></app-product-overview>
+        </div>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="nav-purchases"
+        role="tabpanel"
+        aria-labelledby="nav-purchases-tab"
+        tabindex="0"
+      >
+        <div *ngIf="products$ !== null">
+          <app-product-purchases [product]="products$"></app-product-purchases>
+        </div>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="nav-adjustments"
+        role="tabpanel"
+        aria-labelledby="nav-adjustments-tab"
+        tabindex="0"
+      >
+        <div *ngIf="products$ !== null">
+          <app-product-adjustments
+            [product]="products$"
+          ></app-product-adjustments>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

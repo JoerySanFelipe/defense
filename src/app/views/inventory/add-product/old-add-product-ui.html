@@ -1,0 +1,610 @@
+<!-- <div class="container-fluid p-3 vh-100">
+    <div class="d-flex flex-column h-100 gap-2">
+      <div class="d-flex gap-3 align-items-center">
+        <button class="btn btn" (click)="location.back()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            fill="currentColor"
+            class="bi bi-arrow-left-short"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
+            />
+          </svg>
+        </button>
+        <h5>New Product</h5>
+      </div>
+      <div class="container-fluid p-3 flex-grow-1 rounded-2 d-flex flex-column">
+        <div class="d-flex gap-2">
+          <form
+            class="d-flex flex-column gap-3 w-100 align-items-start"
+            [formGroup]="productForm"
+            (submit)="onSubmitProduct()"
+          >
+            <div class="container-fluid p-3 bg-white">
+              <h5 class="mb-3">Basic Information</h5>
+  
+              <div class="container" style="min-height: 100px">
+                <div class="row mb-3">
+                  <label for="name" class="col-sm-2 col-form-label"
+                    >* Product Images</label
+                  >
+                  <div class="col-sm-10">
+                    <div class="d-flex gap-1 flex-wrap align-items-center">
+                      <div
+                        class="image-container"
+                        *ngFor="let image of _imageURL; let i = index"
+                      >
+                        <div class="image-wrapper">
+                          <img [src]="image" width="100px" height="100px" />
+                          <button
+                            (click)="deleteImage(i)"
+                            class="btn btn-danger btn-circle btn-sm"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="12"
+                              height="12"
+                              fill="currentColor"
+                              class="bi bi-x-lg"
+                              viewBox="0 0 16 16"
+                            >
+                              <path
+                                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+  
+                      <button class="custom-button">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-plus"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+                          />
+                        </svg>
+                        <input
+                          accept="image/*"
+                          type="file"
+                          (change)="onImagePicked($event)"
+                        />
+                        Add image
+                      </button>
+                    </div>
+                  </div>
+                </div>
+  
+                end of product images
+               <div class="container p-3 w-100">
+                  <div class="row mb-3">
+                    <label for="name" class="col-sm-2 col-form-label"
+                      >* Product name</label
+                    >
+                    <div class="col-sm-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        formControlName="name"
+                      />
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="description" class="col-sm-2 col-form-label"
+                      >* Description</label
+                    >
+                    <div class="col-sm-10">
+                      <textarea
+                        class="form-control"
+                        id="description"
+                        formControlName="description"
+                        rows="4"
+                        required
+                        placeholder="Enter your description..."
+                        maxlength="300"
+                      ></textarea>
+                    </div>
+                  </div>
+  
+                  <div class="row mb-3">
+                    <label for="category" class="col-sm-2 col-form-label"
+                      >* Category</label
+                    >
+                    <div class="col-sm-10">
+                      <input
+                        id="typeahead-focus"
+                        type="text"
+                        formControlName="category"
+                        class="form-control"
+                        [(ngModel)]="model"
+                        [ngbTypeahead]="search"
+                        (focus)="focus$.next($any($event).target.value)"
+                        (click)="click$.next($any($event).target.value)"
+                        #instance="ngbTypeahead"
+                      /> -->
+                      <!-- <input
+                        formControlName="category"
+                        type="text"
+                        class="form-control"
+                        id="autocomplete"
+                        placeholder="Enter characters..."
+                        [(ngModel)]="inputValue"
+                        (ngModelChange)="filterOptions($event)"
+                      />
+  
+                      <ul
+                        *ngIf="filteredOptions.length > 0"
+                        id="autocomplete-suggestions"
+                        class="list-group"
+                      >
+                        <li
+                          *ngFor="let option of filteredOptions"
+                          class="list-group-item"
+                          (click)="selectOption(option)"
+                        >
+                          {{ option }}
+                        </li>
+                      </ul> -->
+                    <!-- </div> -->
+  
+                    <!-- <label for="category" class="col-sm-2 col-form-label"
+                      >* Category</label
+                    >
+                    <div class="col-sm-10">
+                      <input
+                        formControlName="category"
+                        class="form-control"
+                        list="datalistOptions"
+                        id="categories"
+                        required
+                        placeholder="Type to search category.."
+                      />
+                      <datalist id="datalistOptions">
+                        <option value="fertilizer"></option>
+                        <option value="insecticide"></option>
+                        <option value="herbicide"></option>
+                        <option value="molluscicide"></option>
+                        <option value="seeds"></option>
+                      </datalist>
+                    </div> -->
+                  <!-- </div>
+                  <div class="row mb-3">
+                    <label for="expire" class="col-sm-2 col-form-label"
+                      >* Expiration Date</label
+                    >
+                    <div class="col-sm-10">
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="expire"
+                        formControlName="expire"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <!-- sales Information -->
+            <!-- <div class="container-fluid p-3 bg-white">
+              <h5 class="mb-3">Sales Information</h5>
+  
+              <div class="container">
+                <div>
+                  <div class="row mb-3">
+                    <label for="cost" class="col-sm-2 col-form-label"
+                      >* Cost</label
+                    >
+                    <div class="col-sm-10">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="cost"
+                        formControlName="cost"
+                      />
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="price" class="col-sm-2 col-form-label"
+                      >* Price</label
+                    >
+                    <div class="col-sm-10">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="price"
+                        formControlName="price"
+                      />
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="stock" class="col-sm-2 col-form-label"
+                      >* Stock</label
+                    >
+                    <div class="col-sm-10">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="stock"
+                        formControlName="stocks"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+  
+            <!-- Shipping Information -->
+            <!-- <div class="container-fluid bg-white p-3">
+              <h5 class="mb-3">Shipping Information</h5>
+              <div class="container">
+                <div class="row mb-3">
+                  <label for="minimum" class="col-sm-2 col-form-label"
+                    >* Minimum item</label
+                  >
+                  <div class="col-sm-10">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="minimum"
+                      formControlName="minimum"
+                      placeholder="enter minimum"
+                    />
+                  </div>
+                </div>
+  
+                <div class="row mb-3">
+                  <label for="shipping" class="col-sm-2 col-form-label">
+                    * Shipping Fee</label
+                  >
+                  <div class="col-sm-10">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="shipping"
+                      formControlName="shipping"
+                    />
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            <div class="container-fluid">
+              <div
+                class="mt-auto d-flex gap-2 w-100 align-items-center justify-content-end"
+              >
+                <button
+                  class="btn btn-danger"
+                  (click)="location.back()"
+                  type="button"
+                >
+                  CANCEL
+                </button>
+                <button
+                  class="btn btn-success"
+                  type="submit"
+                  [disabled]="
+                    productForm.invalid ||
+                    (loadingService.isLoading('add-product') | async) === true
+                  "
+                >
+                  <span
+                    *ngIf="
+                      (loadingService.isLoading('add-product') | async) === true
+                    "
+                    class="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  {{
+                    (loadingService.isLoading("add-product") | async) === true
+                      ? "Saving Product..."
+                      : "Save Product"
+                  }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+  <!-- <div class="container-fluid p-3 vh-100">
+    <div class="d-flex flex-column h-100 gap-2">
+      <div class="d-flex gap-3 align-items-center">
+        <button class="btn btn" (click)="location.back()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+            class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z" />
+          </svg>
+        </button>
+        <h5>New Product</h5>
+      </div>
+      <div class="container-fluid p-3 flex-grow-1 rounded-2 d-flex flex-column">
+        <div class="d-flex gap-2">
+          <form class="d-flex flex-column gap-3 w-100 align-items-start" [formGroup]="productForm"
+            (submit)="onSubmitProduct()">
+            <div class="container-fluid p-3 bg-white">
+              <h5 class="mb-3">Basic Information</h5>
+  
+              <div class="container" style="min-height: 100px">
+                <div class="row mb-3">
+                  <label for="name" class="col-sm-2 col-form-label">* Product Images</label>
+                  <div class="col-sm-10">
+                    <div class="d-flex gap-1 flex-wrap align-items-center">
+                      <div class="image-container" *ngFor="let image of _imageURL; let i = index">
+                        <div class="image-wrapper">
+                          <img [src]="image" width="100px" height="100px" />
+                          <button (click)="deleteImage(i)" class="btn btn-danger btn-circle btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                              class="bi bi-x-lg" viewBox="0 0 16 16">
+                              <path
+                                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+  
+                      <button class="custom-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                          class="bi bi-plus" viewBox="0 0 16 16">
+                          <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                        </svg>
+                        <input accept="image/*" type="file" (change)="onImagePicked($event)" />
+                        Add image
+                      </button>
+                    </div>
+                  </div>
+                </div>
+  
+                end of product images -->
+                <!-- <div class="container p-3 w-100">
+                  <div class="row mb-3">
+                    <label for="name" class="col-sm-2 col-form-label">* Product name</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="name" formControlName="name" />
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="description" class="col-sm-2 col-form-label">* Description</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="description" formControlName="description" rows="4" required
+                        placeholder="Enter your description..." maxlength="300"></textarea>
+                    </div>
+                  </div>
+  
+                  <div class="row mb-3">
+                    <label for="category" class="col-sm-2 col-form-label">* Category</label>
+                    <div class="col-sm-10">
+                      <input id="typeahead-focus" type="text" formControlName="category" class="form-control"
+                        [(ngModel)]="model" [ngbTypeahead]="search" (focus)="focus$.next($any($event).target.value)"
+                        (click)="click$.next($any($event).target.value)" #instance="ngbTypeahead" /> -->
+                      <!-- <input
+                        formControlName="category"
+                        type="text"
+                        class="form-control"
+                        id="autocomplete"
+                        placeholder="Enter characters..."
+                        [(ngModel)]="inputValue"
+                        (ngModelChange)="filterOptions($event)"
+                      />
+  
+                      <ul
+                        *ngIf="filteredOptions.length > 0"
+                        id="autocomplete-suggestions"
+                        class="list-group"
+                      >
+                        <li
+                          *ngFor="let option of filteredOptions"
+                          class="list-group-item"
+                          (click)="selectOption(option)"
+                        >
+                          {{ option }}
+                        </li>
+                      </ul> -->
+                    <!-- </div> -->
+  
+                    <!-- <label for="category" class="col-sm-2 col-form-label"
+                      >* Category</label
+                    >
+                    <div class="col-sm-10">
+                      <input
+                        formControlName="category"
+                        class="form-control"
+                        list="datalistOptions"
+                        id="categories"
+                        required
+                        placeholder="Type to search category.."
+                      />
+                      <datalist id="datalistOptions">
+                        <option value="fertilizer"></option>
+                        <option value="insecticide"></option>
+                        <option value="herbicide"></option>
+                        <option value="molluscicide"></option>
+                        <option value="seeds"></option>
+                      </datalist>
+                    </div> -->
+                  <!-- </div>
+                  <div class="row mb-3">
+                    <label for="hasExpiry" class="col-sm-2 col-form-label">
+                      Expiration Date
+                    </label>
+                    <div class="col-sm-10 d-flex align-items-center">
+                      Checkbox to toggle expiration date -->
+                      <!-- <input type="checkbox" id="hasExpiry" formControlName="hasExpiry" class="form-check-input me-2" />
+                      <label for="hasExpiry" class="form-check-label">
+                        This product has an expiration date
+                      </label>
+                    </div>
+                  </div>
+  
+                  <div class="row mb-3" *ngIf="productForm.get('hasExpiry')?.value">
+                    <label for="expire" class="col-sm-2 col-form-label">Expiration Date</label>
+                    <div class="col-sm-10">
+                      <input type="date" class="form-control" id="expire" formControlName="expire" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+  
+            <!-- Variations Section -->
+            <!-- <div class="row mb-3">
+              <label for="hasVariations" class="col-sm-2 col-form-label">Add Variations</label>
+              <div class="col-sm-10">
+                <input type="checkbox" id="hasVariations" formControlName="hasVariations" class="form-check-input" />
+                <label for="hasVariations" class="form-check-label">
+                  Enable Variations for this Product
+                </label>
+              </div>
+            </div> -->
+  
+            <!-- <div class="col-md-12 mt-4" *ngIf="productForm.controls['hasVariations'].value">
+              <h5>Variations</h5>
+              <button type="button" class="btn btn-primary btn-sm mb-3" (click)="openAddVariationModal()">
+                Add Variation
+              </button>
+  
+              <div class="row row-cols-3" *ngIf="variations.length > 0">
+                <div class="col" *ngFor="let variation of variations; index as i">
+                  <div class="card">
+                    <div class="card-header">
+                      <h5 class="card-title">{{ variation.name }}</h5>
+                    </div>
+                    <div class="card-body p-3">
+                      <div class="d-flex gap-1 align-items-center justify-content-between">
+                        <div class="w-75%">
+                          <img [src]="variation.image || '../../../../assets/images/product.png'" height="200px"
+                            width="200px" alt="Variation Image" />
+                        </div>
+                        <div class="d-flex flex-column gap-1">
+                          <div class="variation-box">
+                            <span class="text-secondary">Stocks</span>
+                            <h6 class="text-dark fw-bold">{{ variation.stocks }} pcs</h6>
+                          </div>
+                          <div class="variation-box">
+                            <span class="text-secondary">Cost</span>
+                            <h6 class="text-dark fw-bold">{{ formatnumber(variation.cost) }}</h6>
+                          </div>
+                          <div class="variation-box">
+                            <span class="text-secondary">Price</span>
+                            <h6 class="text-dark fw-bold">{{ formatnumber(variation.price) }}</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer d-flex gap-2">
+                      <button class="btn btn-danger btn-sm" (click)="removeVariation(variation.id)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                          class="bi bi-trash" viewBox="0 0 16 16">
+                          <path
+                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                          <path
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+  
+  
+  
+  
+            <!-- sales Information -->
+            <!-- <div class="container-fluid p-3 bg-white">
+              <h5 class="mb-3">Sales Information</h5>
+  
+              <div class="container">
+                <div>
+                  <div class="row mb-3">
+                    <label for="cost" class="col-sm-2 col-form-label">* Cost</label>
+                    <div class="col-sm-10">
+                      <input type="number" class="form-control" id="cost" formControlName="cost" />
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="price" class="col-sm-2 col-form-label">* Price</label>
+                    <div class="col-sm-10">
+                      <input type="number" class="form-control" id="price" formControlName="price" />
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="stock" class="col-sm-2 col-form-label">* Stock</label>
+                    <div class="col-sm-10">
+                      <input type="number" class="form-control" id="stock" formControlName="stocks" />
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="stock" class="col-sm-2 col-form-label">* Stock Alert</label>
+                    <div class="col-sm-10">
+                      <input type="number" class="form-control" id="alert" formControlName="stockAlert" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+  
+            <!-- Shipping Information -->
+            <!-- <div class="container-fluid bg-white p-3">
+              <h5 class="mb-3">Shipping Information</h5>
+              <div class="container">
+                <div class="row mb-3">
+                  <label for="minimum" class="col-sm-2 col-form-label">* Minimum item</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" id="minimum" formControlName="minimum"
+                      placeholder="enter minimum" />
+                  </div>
+                </div>
+  
+                <div class="row mb-3">
+                  <label for="shipping" class="col-sm-2 col-form-label">
+                    * Shipping Fee</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" id="shipping" formControlName="shipping" />
+                  </div>
+                </div>
+  
+              </div>
+            </div>
+            <div class="container-fluid">
+              <div class="mt-auto d-flex gap-2 w-100 align-items-center justify-content-end">
+                <button class="btn btn-danger" (click)="location.back()" type="button">
+                  CANCEL
+                </button>
+                <button class="btn btn-success" type="submit" [disabled]="
+                    productForm.invalid ||
+                    (loadingService.isLoading('add-product') | async) === true
+                  ">
+                  <span *ngIf="
+                      (loadingService.isLoading('add-product') | async) === true
+                    " class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  {{
+                  (loadingService.isLoading("add-product") | async) === true
+                  ? "Saving Product..."
+                  : "Save Product"
+                  }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div> -->
+  <!-- </div> --> 
+  

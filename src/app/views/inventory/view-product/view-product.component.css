@@ -1,0 +1,6 @@
+.nav-link.active {
+  color: #007bff;
+}
+.nav-link:not(.active) {
+  color: black !important;
+}

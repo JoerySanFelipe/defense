@@ -1,0 +1,71 @@
+<div class="modal-header bg-success">
+  <h4 class="modal-title text-white">Register Account</h4>
+  <button
+    type="button"
+    class="btn-close bg-white"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="form-floating mb-3">
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          readonly
+          formControlName="email"
+        />
+        <label for="email" class="form-label">Email:</label>
+        <div
+          *ngIf="
+            registerForm.get('email')?.hasError('required') &&
+            registerForm.get('email')?.touched
+          "
+          class="text-danger"
+        >
+          Email is required.
+        </div>
+        <div
+          *ngIf="
+            registerForm.get('email')?.hasError('email') &&
+            registerForm.get('email')?.touched
+          "
+          class="text-danger"
+        >
+          Please enter a valid email address.
+        </div>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+          id="password"
+          [ngClass]="
+            registerForm.get('password')?.invalid
+              ? 'is-invalid'
+              : 'form-control'
+          "
+        />
+        <label for="floatingInput">Password</label>
+        <div
+          *ngIf="
+            registerForm.get('password')?.invalid &&
+            registerForm.get('password')?.touched
+          "
+          class="invalid-feedback"
+        >
+          Password must be at least 6 characters long.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 btn-lg">
+        Register
+      </button>
+    </form>
+  </div>
+</div>

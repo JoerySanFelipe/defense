@@ -1,0 +1,57 @@
+<div class="modal-header bg-danger">
+  <h1 class="modal-title fs-5 text-light" id="driverLabel">
+    Decline Transaction
+  </h1>
+</div>
+<div class="modal-body">
+  <div class="d-flex flex-column align-items-center">
+    <h5 style="text-align: center">
+      Are you sure you want to decline this transaction?
+    </h5>
+    <span class="text-dark fw-bold p-3">{{ transaction.id }}</span>
+  </div>
+
+  <!-- Dropdown for Common Reasons -->
+  <div class="form-floating mb-3">
+    <select
+      class="form-select"
+      id="commonReasons"
+      [(ngModel)]="reason"
+      (change)="onReasonSelect($event)"
+    >
+      <option value="" disabled selected>Select Here</option>
+      <option value="Out of stock">Out of stock</option>
+      <option value="Invalid order details">Invalid order details</option>
+      <option value="Payment not received">Payment not received / invalid</option>
+      <option value="Address not serviceable">Address not serviceable</option>
+      <option value="Address not serviceable">Customer absent at the time of delivery</option>
+      <option value="Customer request to cancel">Customer request to cancel</option>
+    </select>
+    <label for="commonReasons">Reasons</label>
+  </div>
+
+  <!-- Text Area for Custom Reason -->
+  <div class="form-floating mb-3">
+    <textarea
+      class="form-control"
+      placeholder="Leave a comment here"
+      id="floatingTextarea2"
+      style="height: 100px"
+      [(ngModel)]="reason"
+    ></textarea>
+    <label for="floatingTextarea2">Input reason</label>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    data-bs-dismiss="modal"
+    (click)="activeModal.close()"
+  >
+    Cancel
+  </button>
+  <button class="btn btn-danger" (click)="submit()" [disabled]="reason === ''">
+    Submit
+  </button>
+</div>

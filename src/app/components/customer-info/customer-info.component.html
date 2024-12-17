@@ -1,0 +1,9 @@
+<div class="d-flex gap-2 align-items-center" *ngIf="customer$ | async as data">
+  <img
+    [src]="data?.profile || '../../../assets/images/profile_placeholder.jpg'"
+    alt="Profile Image"
+    class="img-fluid rounded-circle"
+    style="height: 40px; width: 40px"
+  />
+  <h6>{{ data?.name ?? "no name" }}</h6>
+</div>

@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h1 class="modal-title fs-5" id="paymentLabel">Confirm Payment</h1>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="d-flex w-100 flex-column gap-2">
+      <h5>
+        Cashier: <b>{{ users?.name }}</b>
+      </h5>
+      <h5>
+        Total:
+        <b>{{ formatNumber(transaction.payment.amount || 0) }}</b>
+      </h5>
+      <h5>
+        Cash Recieve:
+        <b>{{ formatNumber(cashReceived || 0) }}</b>
+      </h5>
+      <h5>
+        Change:
+        <b>{{
+          formatNumber(computeChange(transaction.payment.amount, cashReceived))
+        }}</b>
+      </h5>
+      <div class="form-floating mb-3">
+        <input
+          type="number"
+          class="form-control"
+          id="cashReceived"
+          placeholder="0"
+          [(ngModel)]="cashReceived"
+        />
+        <label for="cashReceived">Cash Recieve</label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-danger btn-lg w-100"
+    (click)="submit()"
+    [disabled]="
+      (loadingService.isLoading('payment') | async) === true ||
+      cashReceived < transaction.payment.amount ||
+      isCashReceivedNaN()
+    "
+  >
+    <span
+      *ngIf="(loadingService.isLoading('payment') | async) === true"
+      class="spinner-border spinner-border-sm me-2"
+      role="status"
+      aria-hidden="true"
+    ></span>
+    {{
+      (loadingService.isLoading("payment") | async) === true
+        ? "Confirming Payment..."
+        : "Confirm payment"
+    }}
+  </button>
+</div>

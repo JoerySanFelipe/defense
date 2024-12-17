@@ -1,0 +1,95 @@
+<div class="modal-header bg-dark">
+  <h1 class="modal-title fs-5 text-light" id="driverLabel">
+    Edit {{ variations[index].name }}
+  </h1>
+</div>
+<div class="modal-body">
+  <img [src]="variationImage$" width="100px" height="100px" class="mb-3" />
+  <form class="row g-3" [formGroup]="variationForm" (submit)="submitForm()">
+    <div class="col-md-12">
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        formControlName="name"
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="cost" class="form-label"> Cost</label>
+      <input
+        type="number"
+        class="form-control"
+        id="cost"
+        formControlName="cost"
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="price" class="form-label"> Price</label>
+      <input
+        type="number"
+        class="form-control"
+        id="price"
+        formControlName="price"
+      />
+    </div>
+    <div class="col-md-12">
+      <label for="stocks" class="form-label"> Stocks</label>
+      <input
+        type="number"
+        class="form-control"
+        id="stocks"
+        formControlName="stocks"
+      />
+    </div>
+    <div class="col-md-12">
+      <label for="stocks" class="form-label">Stock Alert</label>
+      <input
+        type="number"
+        class="form-control"
+        id="alert"
+        formControlName="stockAlert"
+      />
+    </div>
+    <div class="col-md-12">
+      <label for="stocks" class="form-label"> Image</label>
+      <input
+        type="file"
+        accept="image/*"
+        class="form-control"
+        id="image"
+        (change)="onImagePicked($event)"
+      />
+    </div>
+    <div class="mt-auto d-flex gap-2 p-3 align-items-end justify-content-end">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-bs-dismiss="modal"
+        (click)="activeModal.close(null)"
+      >
+        Close
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="
+          (loadingService.isLoading('add-variation') | async) === true ||
+          variationForm.invalid
+        "
+      >
+        <span
+          *ngIf="(loadingService.isLoading('add-variation') | async) === true"
+          class="spinner-border spinner-border-sm me-2"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        {{
+          (loadingService.isLoading("add-variation") | async) === true
+            ? "Saving Variation..."
+            : "  Save Variation"
+        }}
+      </button>
+    </div>
+  </form>
+</div>

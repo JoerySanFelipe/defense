@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <h1 class="modal-title fs-5" id="driverLabel">Edit Topic</h1>
+</div>
+
+<div class="modal-body">
+  <img
+    *ngIf="topic?.image != ''"
+    [alt]="topic?.title"
+    [src]="topic?.image"
+    width="100px"
+    height="100px"
+    class="rounded"
+  />
+  <form class="row g-3 mt-3" [formGroup]="topicForm!" (submit)="submit()">
+    <div class="col-md-12">
+      <div class="form-floating mb-2">
+        <input
+          type="file"
+          accept="image/*"
+          class="form-control"
+          id="image"
+          (change)="onSelectImage($event)"
+        />
+        <label for="image" class="form-label">Image</label>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-floating mb-2">
+        <input
+          type="title"
+          class="form-control"
+          id="title"
+          formControlName="title"
+        />
+        <label for="title" class="form-label">Title</label>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="form-floating">
+        <textarea
+          class="form-control"
+          formControlName="desc"
+          placeholder="Leave a Description here"
+          id="desc"
+          style="height: 200px"
+        ></textarea>
+        <label for="desc">Description</label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="submit"
+        class="btn btn-success w-100"
+        [disabled]="
+          topicForm?.invalid ||
+          (loadingService.isLoading('save-topic') | async) === true
+        "
+      >
+        <span
+          *ngIf="(loadingService.isLoading('save-topic') | async) === true"
+          class="spinner-border spinner-border-sm me-2"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        {{
+          (loadingService.isLoading("save-topic") | async) === true
+            ? "Saving Topic..."
+            : "Save"
+        }}
+      </button>
+    </div>
+  </form>
+</div>

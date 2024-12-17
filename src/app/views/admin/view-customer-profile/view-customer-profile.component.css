@@ -1,0 +1,24 @@
+.box {
+  height: 90%;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem;
+}
+
+.title {
+  margin-right: 3em;
+}
+
+.badge-success {
+  background-color: #28a745;
+  color: white;
+  padding: 0.4em 0.6em;
+  border-radius: 4px;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.4em 0.6em;
+  border-radius: 4px;
+}

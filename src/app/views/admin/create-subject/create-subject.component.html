@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <h1 class="modal-title fs-5">Create Subject</h1>
+</div>
+<div class="modal-body" *ngIf="subjectForm !== undefined">
+  <form class="row g-3" [formGroup]="subjectForm" (submit)="submit()">
+    <div class="col-md-12">
+      <div class="form-floating mb-2">
+        <input
+          type="file"
+          accept="image/*"
+          class="form-control"
+          id="image"
+          (change)="onSelectImage($event)"
+        />
+        <label for="image" class="form-label">Image</label>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-floating mb-2">
+        <input
+          type="title"
+          class="form-control"
+          id="title"
+          formControlName="title"
+        />
+        <label for="title" class="form-label">Subject Title</label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="submit"
+        class="btn btn-success w-100"
+        [disabled]="
+          subjectForm.invalid ||
+          subjectFile$ === null ||
+          (loadingService.isLoading('create-subject') | async) === true
+        "
+      >
+        <span
+          *ngIf="(loadingService.isLoading('create-subject') | async) === true"
+          class="spinner-border spinner-border-sm me-2"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        {{
+          (loadingService.isLoading("create-subject") | async) === true
+            ? "Saving..."
+            : "Save Subject"
+        }}
+      </button>
+    </div>
+  </form>
+</div>

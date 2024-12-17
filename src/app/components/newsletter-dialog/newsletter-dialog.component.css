@@ -1,0 +1,28 @@
+.expanding-textarea:focus {
+  outline: none; /* Remove default focus outline */
+  border-color: #ced4da; /* Add custom border color */
+  box-shadow: none; /* Remove any box shadow */
+}
+
+.custom-file-upload {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-file-upload-label {
+  display: inline-block;
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+}

@@ -1,0 +1,87 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;800&family=Poppins:wght@200;300;400;600;700&display=swap");
+
+* {
+  font-family: "Inter", sans-serif;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+}
+.btn-danger {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 500;
+  border-radius: 5px;
+  font-size: medium;
+}
+
+:root {
+  --primary-color: #901a21e5;
+  --bg-color: #f0f1f3;
+}
+
+.btn {
+  border-radius: 4px;
+}
+
+.modal-footer {
+  border: 0;
+}
+.container-fluid {
+  padding: 0;
+  margin: 0;
+}
+
+.modal-header {
+  border: 0;
+}
+
+.divider {
+  border-top: 1px solid #ccc;
+  margin: 5px 0;
+}
+
+.list-group-item {
+  border: none;
+}
+
+.single-line-ellipsis {
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflowing text */
+  text-overflow: ellipsis; /* Display an ellipsis (...) for overflow */
+  max-height: 1.2em; /* Set the maximum height for one line */
+  line-height: 1.2em; /* Match the line height to the max height */
+
+  border: 1px solid #ccc; /* Optional: add a border for visual clarity */
+}
+
+.no-margin {
+  margin-bottom: 2px;
+}
+
+.profile {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.profile2 {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.search-input {
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: var(--bg-color);
+  outline: none;
+}

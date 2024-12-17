@@ -1,0 +1,74 @@
+<div class="container-fluid h-100 p-3">
+  <div class="h-100 d-flex flex-column w-100 bg-white rounded p-3">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h5 class="text-primary">Newsletters</h5>
+      <button class="btn btn-dark" (click)="createNewsletterModal()">
+        <i class="fa-solid fa-plus me-3"></i>Create Newsletter
+      </button>
+    </div>
+    <table class="table table-borderless table-hover">
+      <thead>
+        <tr>
+          <th scope="col" class="text-start">Content</th>
+          <th scope="col" class="text-end">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let news of newsletters$">
+          <td class="col-8">
+            <div class="d-flex gap-2">
+              <img
+                *ngIf="news.image !== ''"
+                [src]="news.image"
+                alt="newsletter"
+                width="60px"
+              />
+              <p class="fs-6">{{ news.description }}</p>
+            </div>
+          </td>
+          <td class="col-4">
+            <div class="d-flex gap-3 align-items-center justify-content-end">
+              <p class="text-muted">
+                {{ news.createdAt.toLocaleDateString() }}
+              </p>
+
+              <div ngbDropdown class="d-inline-block">
+                <button type="button" class="btn" ngbDropdownToggle>
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button ngbDropdownItem (click)="editNewsletter(news)">
+                    Edit
+                  </button>
+                  <button ngbDropdownItem (click)="deleteNewsLetter(news.id)">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="mt-auto d-flex justify-content-between align-items-center p-2">
+      <ngb-pagination
+        [collectionSize]="collectionSize"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        (pageChange)="refreshNewsletters()"
+      >
+      </ngb-pagination>
+
+      <select
+        class="form-select"
+        style="width: auto"
+        [(ngModel)]="pageSize"
+        (ngModelChange)="refreshNewsletters()"
+      >
+        <option [ngValue]="10">10 items per page</option>
+        <option [ngValue]="20">20 items per page</option>
+        <option [ngValue]="30">30 items per page</option>
+      </select>
+    </div>
+  </div>
+</div>

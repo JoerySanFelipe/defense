@@ -1,0 +1,803 @@
+<div class="container-fluid d-flex flex-column h-100 gap-3 p-3">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="containers p-3 pending-accepted">
+          <h6>Last 7 days</h6>
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <h2>
+                  <b>{{ pendingOrdersLastSevenDays | async }}</b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Pending</h5>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <h2>
+                  <b>{{ acceptedLastSevenDays | async }}</b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Accepted</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="containers p-3 completed">
+          <h6>Last 7 days</h6>
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <h2>
+                  <b>
+                    {{ completedLastSevenDays | async }}
+                  </b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Completed</h5>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <h2 class="sales">
+                  <b>
+                    {{
+                      salesLastSevenDays
+                        | async
+                        | currency : "PHP" : "symbol" : "1.2-2"
+                    }}
+                  </b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Sales</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="containers p-3 types">
+          <h6>Last 7 days</h6>
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <h2>
+                  <b> {{ pickUpLastSevenDays | async }} </b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Pickup</h5>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <h2>
+                  <b> {{ deliveryLastSevenDays | async }} </b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Delivery</h5>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <h2>
+                  <b> {{ failedLastSevenDays | async }} </b>
+                </h2>
+              </div>
+              <div class="row">
+                <h5>Failed</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="tab-content bg-white flex-grow-1 border-radius-1"
+    id="nav-tabContent"
+  >
+    <ul ngbNav #nav="ngbNav" class="nav-pills nav-fill">
+      <li ngbNavItem>
+        <button ngbNavLink>Pending</button>
+        <ng-template ngbNavContent>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Order Details</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Order Value</th>
+                <th scope="col">Is Order Paid?</th>
+                <th scope="col">Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let transactions of pending$ | async">
+              <tr>
+                <td>
+                  <div class="d-flex flex-column gap-1">
+                    <h6>Order Id: {{ transactions.id }}</h6>
+                    <h6 class="text-success">{{ transactions.type }}</h6>
+                  </div>
+                </td>
+                <td>
+                  <app-customer-info
+                    [customerID]="transactions.customerID"
+                  ></app-customer-info>
+                </td>
+                <td>
+                  <div>
+                    <p>
+                      <b>
+                        {{ transactions.payment.amount.toLocaleString('en-US', {
+                      style: 'currency', currency: 'PHP', })}}
+                      </b>
+
+                      - {{ transactions.payment.type }}
+                    </p>
+                  </div>
+                </td>
+                <td>{{ transactions.payment.status }}</td>
+                <td>{{ convertTimestamp(transactions.createdAt) }}</td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <button
+                      class="btn btn-danger"
+                      [disabled]="
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                      "
+                      (click)="declineTransaction(transactions)"
+                    >
+                      <span
+                        *ngIf="
+                          (loadingService.isLoading(transactions.id)
+                            | async) === true
+                        "
+                        class="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      {{
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                          ? "loading..."
+                          : "Decline"
+                      }}
+                    </button>
+                    <button
+                      class="btn btn-success"
+                      (click)="
+                        acceptOrder(
+                          transactions,
+                          transactions.id,
+                          transactions.payment
+                        )
+                      "
+                      [disabled]="
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                      "
+                    >
+                      <span
+                        *ngIf="
+                          (loadingService.isLoading(transactions.id)
+                            | async) === true
+                        "
+                        class="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      {{
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                          ? "loading..."
+                          : "Confirm"
+                      }}
+                    </button>
+
+                    <button
+                      class="btn btn-success"
+                      (click)="reviewTransaction(transactions)"
+                    >
+                      Review
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table></ng-template
+        >
+      </li>
+      <li ngbNavItem>
+        <button ngbNavLink>Accepted</button>
+        <ng-template ngbNavContent>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Order Details</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Order Value</th>
+                <th scope="col">Is Order Paid?</th>
+                <th scope="col">Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let transactions of accepted$ | async">
+              <tr>
+                <td>
+                  <div class="d-flex flex-column gap-1">
+                    <h6>Order Id: {{ transactions.id }}</h6>
+                    <h6 class="text-success">{{ transactions.type }}</h6>
+                  </div>
+                </td>
+                <td>
+                  <app-customer-info
+                    [customerID]="transactions.customerID"
+                  ></app-customer-info>
+                </td>
+                <td>
+                  <div>
+                    <p>
+                      <b>
+                        {{ transactions.payment.amount.toLocaleString('en-US', {
+                      style: 'currency', currency: 'PHP', })}}
+                      </b>
+
+                      - {{ transactions.payment.type }}
+                    </p>
+                  </div>
+                </td>
+                <td>{{ transactions.payment.status }}</td>
+                <td>{{ convertTimestamp(transactions.createdAt) }}</td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <button
+                      class="btn btn-danger"
+                      [disabled]="
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                      "
+                      (click)="declineTransaction(transactions)"
+                    >
+                      <span
+                        *ngIf="
+                          (loadingService.isLoading(transactions.id)
+                            | async) === true
+                        "
+                        class="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      {{
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                          ? "loading..."
+                          : "Decline"
+                      }}
+                    </button>
+                    <button
+                      *ngIf="transactions.type.toString() == 'PICK_UP'"
+                      class="btn btn-success"
+                      (click)="
+                        readyToPickUp(transactions.id, transactions.payment)
+                      "
+                    >
+                      Ready to Pick Up
+                    </button>
+                    <button
+                      *ngIf="transactions.type.toString() == 'DELIVERY'"
+                      (click)="
+                        readyToDeliver(transactions.id, transactions.payment)
+                      "
+                      class="btn btn-danger"
+                    >
+                      Ready to Deliver
+                    </button>
+                    <button
+                      class="btn btn-success"
+                      (click)="reviewTransaction(transactions)"
+                    >
+                      Review
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table></ng-template
+        >
+      </li>
+
+      <li ngbNavItem>
+        <button ngbNavLink>To Deliver</button>
+        <ng-template ngbNavContent>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Order Details</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Order Value</th>
+                <th scope="col">Is Order Paid?</th>
+                <th scope="col">Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let transactions of toDeliver$ | async">
+              <tr>
+                <td>
+                  <div class="d-flex flex-column gap-1">
+                    <h6>Order Id: {{ transactions.id }}</h6>
+                    <h6 class="text-success">{{ transactions.type }}</h6>
+                  </div>
+                </td>
+                <td>
+                  <app-customer-info
+                    [customerID]="transactions.customerID"
+                  ></app-customer-info>
+                </td>
+                <td>
+                  <div>
+                    <p>
+                      <b>
+                        {{ transactions.payment.amount.toLocaleString('en-US', {
+                      style: 'currency', currency: 'PHP', })}}
+                      </b>
+
+                      - {{ transactions.payment.type }}
+                    </p>
+                  </div>
+                </td>
+                <td>{{ transactions.payment.status }}</td>
+                <td>{{ convertTimestamp(transactions.createdAt) }}</td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <button
+                      class="btn btn-danger"
+                      [disabled]="
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                      "
+                      (click)="declineTransaction(transactions)"
+                    >
+                      <span
+                        *ngIf="
+                          (loadingService.isLoading(transactions.id)
+                            | async) === true
+                        "
+                        class="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      {{
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                          ? "loading..."
+                          : "Decline"
+                      }}
+                    </button>
+                    <button
+                      *ngIf="transactions.driverID === ''"
+                      class="btn btn-success"
+                      (click)="addDriver(transactions)"
+                    >
+                      Add Driver
+                    </button>
+                    <button
+                      *ngIf="transactions.driverID !== ''"
+                      (click)="
+                        ongoingDeliver(transactions.id, transactions.payment)
+                      "
+                      class="btn btn-success"
+                    >
+                      Deliver Order
+                    </button>
+                    <button
+                      class="btn btn-success"
+                      (click)="reviewTransaction(transactions)"
+                    >
+                      Review
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table></ng-template
+        >
+      </li>
+      <li ngbNavItem>
+        <button ngbNavLink>To Pick</button>
+        <ng-template ngbNavContent>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Order Details</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Order Value</th>
+                <th scope="col">Is Order Paid?</th>
+                <th scope="col">Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let transactions of toPick$ | async">
+              <tr>
+                <td>
+                  <div class="d-flex flex-column gap-1">
+                    <h6>Order Id: {{ transactions.id }}</h6>
+                    <h6 class="text-success">{{ transactions.type }}</h6>
+                  </div>
+                </td>
+                <td>
+                  <app-customer-info
+                    [customerID]="transactions.customerID"
+                  ></app-customer-info>
+                </td>
+                <td>
+                  <div>
+                    <p>
+                      <b>
+                        {{ transactions.payment.amount.toLocaleString('en-US', {
+                      style: 'currency', currency: 'PHP', })}}
+                      </b>
+
+                      - {{ transactions.payment.type }}
+                    </p>
+                  </div>
+                </td>
+                <td>{{ transactions.payment.status }}</td>
+                <td>{{ convertTimestamp(transactions.createdAt) }}</td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <button
+                      class="btn btn-danger"
+                      [disabled]="
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                      "
+                      (click)="declineTransaction(transactions)"
+                    >
+                      <span
+                        *ngIf="
+                          (loadingService.isLoading(transactions.id)
+                            | async) === true
+                        "
+                        class="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      {{
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                          ? "loading..."
+                          : "Decline"
+                      }}
+                    </button>
+                <!-- Add Payment Button: Only shown if payment is not made -->
+                <button
+                  *ngIf="!isPaid(transactions.payment)"
+                  class="btn btn-outline-secondary"
+                  (click)="selectTransactionToAddPayment(transactions)"
+                  >
+                    ADD PAYMENT
+                  </button>
+
+                <!-- Completed Button: Only shown if payment is received or Add Payment button is removed -->
+              <button
+               *ngIf="isPaid(transactions.payment)"
+                (click)="markAsComplete(transactions, transactions.payment)"
+                class="btn btn-success"
+                >
+                  Completed
+                </button>
+                    <button
+                      class="btn btn-success"
+                      (click)="reviewTransaction(transactions)"
+                    >
+                      Review
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table></ng-template
+        >
+      </li>
+      <li ngbNavItem>
+        <button ngbNavLink>Out for Delivery</button>
+        <ng-template ngbNavContent>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Order Details</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Order Value</th>
+                <th scope="col">Is Order Paid?</th>
+                <th scope="col">Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let transactions of outOfDelivery$ | async">
+              <tr>
+                <td>
+                  <div class="d-flex flex-column gap-1">
+                    <h6>Order Id: {{ transactions.id }}</h6>
+                    <h6 class="text-success">{{ transactions.type }}</h6>
+                  </div>
+                </td>
+                <td>
+                  <app-customer-info
+                    [customerID]="transactions.customerID"
+                  ></app-customer-info>
+                </td>
+                <td>
+                  <div>
+                    <p>
+                      <b>
+                        {{ transactions.payment.amount.toLocaleString('en-US', {
+                      style: 'currency', currency: 'PHP', })}}
+                      </b>
+
+                      - {{ transactions.payment.type }}
+                    </p>
+                  </div>
+                </td>
+                <td>{{ transactions.payment.status }}</td>
+                <td>{{ convertTimestamp(transactions.createdAt) }}</td>
+                <td>
+                  <button
+                      class="btn btn-danger"
+                      [disabled]="
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                      "
+                      (click)="declineTransaction(transactions)"
+                    >
+                      <span
+                        *ngIf="
+                          (loadingService.isLoading(transactions.id)
+                            | async) === true
+                        "
+                        class="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      {{
+                        (loadingService.isLoading(transactions.id) | async) ===
+                        true
+                          ? "loading..."
+                          : "Decline"
+                      }}
+                    </button>
+                  <button
+                    (click)="markAsComplete(transactions, transactions.payment)"
+                    class="btn btn-success"
+                  >
+                    Completed
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table></ng-template
+        >
+      </li>
+
+      <li ngbNavItem>
+        <button ngbNavLink>Failed</button>
+        <ng-template ngbNavContent>
+          <div class="d-flex align-items-center justify-content-between p-3">
+            <div class="input-group w-25">
+              <input
+                type="text"
+                class="search-input w-100"
+                placeholder="Search Transaction id..."
+                [(ngModel)]="searchText"
+                (input)="search('F')"
+              />
+            </div>
+            <div ngbDropdown class="d-inline-block">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                id="dropdownBasic1"
+                ngbDropdownToggle
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-filter me-3"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"
+                  />
+                </svg>
+                Filters
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button ngbDropdownItem (click)="applyTodayFilter('F')">
+                  Today
+                </button>
+                <button ngbDropdownItem (click)="applyAllOrdersFilter('F')">
+                  All Orders
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Order Details</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Order Value</th>
+                <th scope="col">Is Order Paid?</th>
+                <th scope="col">Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let transactions of failed$ | async">
+              <tr>
+                <td>
+                  <div class="d-flex flex-column gap-1">
+                    <h6>Order Id: {{ transactions.id }}</h6>
+                    <h6 class="text-success">{{ transactions.type }}</h6>
+                  </div>
+                </td>
+                <td>
+                  <app-customer-info
+                    [customerID]="transactions.customerID"
+                  ></app-customer-info>
+                </td>
+                <td>
+                  <div>
+                    <p>
+                      <b>
+                        {{ transactions.payment.amount.toLocaleString('en-US', {
+                      style: 'currency', currency: 'PHP', })}}
+                      </b>
+
+                      - {{ transactions.payment.type }}
+                    </p>
+                  </div>
+                </td>
+                <td>{{ transactions.payment.status }}</td>
+                <td>{{ convertTimestamp(transactions.createdAt) }}</td>
+                <td>
+                  <button
+                    class="btn btn-success"
+                    (click)="reviewTransaction(transactions)"
+                  >
+                    Review
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table></ng-template
+        >
+      </li>
+
+      <li ngbNavItem>
+        <button ngbNavLink>Completed</button>
+        <ng-template ngbNavContent>
+          <div class="d-flex align-items-center justify-content-between p-3">
+            <div class="input-group w-25">
+              <input
+                type="text"
+                class="search-input w-100"
+                placeholder="Search Transaction id..."
+                [(ngModel)]="searchText"
+                (input)="search('C')"
+              />
+            </div>
+            <div class="d-flex gap-2">
+              <div ngbDropdown class="d-inline-block">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  id="dropdownBasic1"
+                  ngbDropdownToggle
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-filter me-3"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"
+                    />
+                  </svg>
+                  Filters
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button ngbDropdownItem (click)="applyTodayFilter('C')">
+                    Today
+                  </button>
+                  <button ngbDropdownItem (click)="applyAllOrdersFilter('C')">
+                    All Orders
+                  </button>
+                </div>
+              </div>
+              <button
+                class="btn btn-dark"
+                (click)="
+                  printTransaction('Completed Transactions', completed$!)
+                "
+              >
+                Download
+              </button>
+            </div>
+          </div>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Order Details</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Order Value</th>
+                <th scope="col">Is Order Paid?</th>
+                <th scope="col">Date</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let transactions of completed$ | async">
+              <tr>
+                <td>
+                  <div class="d-flex flex-column gap-1">
+                    <h6>Order Id: {{ transactions.id }}</h6>
+                    <h6 class="text-success">{{ transactions.type }}</h6>
+                  </div>
+                </td>
+                <td>
+                  <app-customer-info
+                    [customerID]="transactions.customerID"
+                  ></app-customer-info>
+                </td>
+                <td>
+                  <div>
+                    <p>
+                      <b>
+                        {{ transactions.payment.amount.toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'PHP',
+                        })}}
+                      </b>
+
+                      - {{ transactions.payment.type }}
+                    </p>
+                  </div>
+                </td>
+                <td>{{ transactions.payment.status }}</td>
+                <td>{{ convertTimestamp(transactions.createdAt) }}</td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <button
+                      class="btn btn-success"
+                      (click)="reviewTransaction(transactions)"
+                    >
+                      Review
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table></ng-template
+        >
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+</div>

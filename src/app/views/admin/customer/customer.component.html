@@ -1,0 +1,49 @@
+<!-- <div class="box text-white">
+  <ngx-json-viewer [json]="$customers"></ngx-json-viewer>
+</div> -->
+<div class="container-fluid d-flex flex-column h-100 gap-3 p-3">
+  <div class="containers p-3">
+    <h5><b>Customers</b></h5>
+    <div class="containers">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control mb-3"
+          placeholder="Search customer name"
+          style="width: 20%"
+          [(ngModel)]="searchCustomerName"
+          (input)="applyFilter()"
+        />
+      </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Fullname</th>
+            <th scope="col">Email</th>
+            <!-- <th scope="col">Mobile</th> -->
+            <th scope="col">Address</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let customer of filterCustomers">
+          <tr>
+            <td scope="row">{{ customer.name }}</td>
+            <td>{{ customer.email }}</td>
+            <!-- <td>{{ customer.phone }}</td> -->
+            <td>
+              {{ getDefaultAddressFormattedLocation(customer.addresses) }}
+            </td>
+            <td>
+              <button
+                class="btn btn-outline-secondary"
+                (click)="viewProfile(customer)"
+              >
+                View Profile
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

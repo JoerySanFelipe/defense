@@ -1,0 +1,14 @@
+<button
+  class="btn btn-success"
+  [type]="type"
+  [disabled]="isDisable"
+  (click)="handleClick()"
+>
+  <span
+    *ngIf="(loadingService.isLoading(key) | async) === true"
+    class="spinner-border spinner-border-sm me-2"
+    role="status"
+    aria-hidden="true"
+  ></span>
+  {{ (loadingService.isLoading(key) | async) === true ? loadingLabel : label }}
+</button>

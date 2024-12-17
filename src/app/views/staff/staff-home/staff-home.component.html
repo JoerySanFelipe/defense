@@ -1,0 +1,136 @@
+<div class="container-fluid h-100 p-3 overflow-hidden">
+  <div class="d-flex align-items-stretch h-100 overflow-hidden bg-white rounded p-3">
+    <div class="w-75 overflow-auto">
+      <div class="d-flex align-items-center justify-content-between" style="padding-left: 1rem; padding-right: 1rem; padding-bottom: 10px">
+        <h6><b>Cashier : </b>{{ _users?.name }}</h6>
+        <div class="input-group w-25">
+          <input type="text" class="search-input w-100" placeholder="Search product name per category" [(ngModel)]="searchText" (input)="search()" />
+        </div>
+      </div>
+      <ul class="nav nav-pills">
+        <li class="nav-item" *ngFor="let category of _categories; let i = index">
+          <a class="nav-link" [class.active]="i === activeTab" (click)="selectTab(i)">
+            {{ category.toUpperCase() }}
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane" *ngFor="let category of _categories; let i = index" [class.active]="i === activeTab">
+          <div class="container">
+            <div class="flex-container">
+              <div class="child-container" *ngFor="let product of filteredProducts[category]">
+                <div class="card p-3" style="width: 100%; height: 100%" (click)="openUnitWeightSelection(product)">
+                  <img [src]="product.image" class="card-img-top" height="55%" width="100%" alt="product image" />
+                  <div class="card-body">
+                    <!-- Product Name -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6 class="card-title fs-6" id="product-title">{{ product.name }}</h6>
+                    </div>
+      
+                    <!-- Stock availability -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="text-secondary fs-6">{{ product.stocks }} items left</span>
+                    </div>
+      
+                    <!-- Remaining weight (displayed only for weight-based products) -->
+                    <div *ngIf="product.weightPricing" class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="text-secondary fs-6">{{ product.weightPricing.remainingWeight }} kg remaining</span>
+                    </div>
+      
+                    <!-- Price at the end of the card, bolded -->
+                    <div class="d-flex justify-content-end">
+                      <h5 class="card-text text-success fs-6 fw-bold">
+                        {{ formatPrice(product.price) }}
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+    <div class="d-flex" style="height: 100%">
+      <div class="vr"></div>
+    </div>
+    <div class="flex-grow-1 overflow-hidden d-flex flex-column">
+ <!-- Title with icon -->
+ <h6 class=" title-cart align-items-center gap-2 m-2" id="title-cart">
+  <span class="cart-icon">
+    <i class="bi bi-cart-plus-fill"></i>
+  </span>
+  <b>Cart</b>
+</h6>
+      <ul class="list-group list-group-flush overflow-auto flex-grow-1 w-100">
+        <li class="list-group-item" *ngFor="let order of _cart; index as index">
+          <div class="d-flex gap-2 p-1 w-100">
+            <img [src]="order.image" class="rounded" alt="Product image" style="width: 80px; height: 80px" />
+    
+            <div class="d-flex flex-grow-1 justify-content-between flex-column">
+              <!-- Product Name and Remove Button -->
+              <div class="d-flex justify-content-between">
+                <h6 class="card-title" id="product-title">{{ order.name }}</h6>
+                <button class="btn btn-danger btn-sm" (click)="removeFromCart(index)">
+                  <i class="bi bi-cart-x" style="font-size: 1.2rem;"></i>
+                </button>
+              </div>
+    
+              <!-- Weight or Unit Quantity Input -->
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="container d-flex gap-1 align-items-center">
+                  <!-- If weight-based purchase, show input field for quantity -->
+                  <ng-container *ngIf="order.weightPricing; else unitBased">
+                    <!-- Input field with dropdown that appears on click -->
+                    <div>
+                      <input
+                        type="number"
+                        class="form-control form-control-sm"
+                        [(ngModel)]="order.quantity"
+                        (click)="toggleDropdown(index, $event)"
+                        (change)="adjustWeightQuantity(index)"
+                        [min]="0"
+                        [max]="order.weightPricing.remainingWeight ?? 0"
+                        step="any"
+                        placeholder="0"
+                        style="width: 160px;"
+                      />
+                      <!-- Dropdown options appear when input is clicked -->
+                      <div *ngIf="currentDropdownIndex === index" class="dropdown-menu show" style="width: 70px; position: absolute;">
+                        <a class="dropdown-item" (click)="selectQuantity(0.25, index)">1/4 kg</a>
+                        <a class="dropdown-item" (click)="selectQuantity(0.5, index)">1/2 kg</a>
+                        <a class="dropdown-item" (click)="selectQuantity(1, index)">1 kg</a>
+                        <a class="dropdown-item" (click)="selectQuantity(2, index)">2 kg</a>
+                        <a class="dropdown-item" (click)="selectQuantity(5, index)">5 kg</a>
+                      </div>
+                    </div>
+                    <span>kg</span>
+                  </ng-container>
+    
+                  <ng-template #unitBased>
+                    <!-- Unit-based buttons for quantity -->
+                    <button class="btn btn-light btn-sm" (click)="decreaseQuantity(index)">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                    <h6 class="fs-6 fw-bold">{{ order.quantity + ' units' }}</h6>
+                    <button class="btn btn-light btn-sm" (click)="increaseQuantity(index, order)">
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </ng-template>
+                </div>
+                <h5 class="card-text text-success fw-bold fs-6">
+                  {{ order.weightPricing && order.weightPricing.kgPrice ? formatPrice(order.weightPricing.kgPrice * order.quantity) : formatPrice(order.price * order.quantity) }}
+                </h5>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+      <!-- Disable checkout button if quantity exceeds remaining weight -->
+      <button class="btn btn-danger w-100 btn-lg m-3" (click)="openModal()" [disabled]="isSubtotalDisabled">
+        Checkout ( {{ subtotal(_cart) }})
+      </button>
+    </div>     
+  </div>
+</div>

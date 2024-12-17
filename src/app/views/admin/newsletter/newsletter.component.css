@@ -1,0 +1,8 @@
+.row .col:hover {
+  background-color: var(--bg-color);
+}
+
+.row .col:hover {
+  background-color: var(--bg-color);
+  border-radius: 10px;
+}

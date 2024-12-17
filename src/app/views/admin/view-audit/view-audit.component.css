@@ -1,0 +1,67 @@
+.containers {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  justify-content: space-evenly;
+  padding: 10px;
+}
+
+.row .back-btn {
+  width: 70px;
+  height: 40px;
+  margin-left: 10px;
+}
+
+.row.top,
+.row.mid {
+  border-bottom: 1px solid #ccc;
+}
+
+.row .label-audit {
+  color: #464e5c;
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 35px;
+}
+
+.audit-text {
+  color: #0d6efd;
+}
+
+.btn {
+  width: 150px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.label {
+  color: #464e5c;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 35px;
+}
+
+.col h6 {
+  font-size: 14px;
+  color: #5d6679;
+  margin-bottom: 18px;
+}
+
+.col a {
+  font-size: 12px;
+  color: #0d6efd;
+}
+
+.col img {
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ccc;
+}
+
+.parameters-container {
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+}

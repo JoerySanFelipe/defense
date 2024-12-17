@@ -1,0 +1,95 @@
+<div class="modal-header">
+  <h1 class="modal-title fs-5">Create Topic</h1>
+</div>
+<div class="modal-body" *ngIf="topicForm !== undefined">
+  <form class="row g-3" [formGroup]="topicForm" (submit)="submit()">
+    <div class="col-md-12">
+      <div class="form-floating mb-2">
+        <input
+          type="file"
+          accept="image/*"
+          class="form-control"
+          id="image"
+          (change)="onSelectImage($event)"
+        />
+        <label for="image" class="form-label">Image</label>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="form-floating mb-2">
+        <input
+          type="title"
+          class="form-control"
+          id="title"
+          formControlName="title"
+        />
+        <label for="title" class="form-label">Title</label>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-floating mb-2">
+        <input
+          type="subject"
+          class="form-control"
+          id="subject"
+          readonly
+          [value]="topicSubject?.name"
+        />
+        <label for="title" class="form-label">Subject</label>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="form-floating">
+        <textarea
+          class="form-control"
+          formControlName="desc"
+          placeholder="Leave a Description here"
+          id="desc"
+          style="height: 200px"
+        ></textarea>
+        <label for="desc">Description</label>
+      </div>
+    </div>
+    <div class="col-md-12 mb-3">
+      <div class="form-floating">
+        <select
+          formControlName="category"
+          class="form-select"
+          id="floatingSelect"
+          aria-label="Floating label select example"
+        >
+          <option selected>Select Category</option>
+          <option value="INSECTS">INSECTS</option>
+          <option value="DISEASES">DISEASES</option>
+          <option value="WEEDS">WEEDS</option>
+        </select>
+        <label for="floatingSelect">--Select Category--</label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="submit"
+        class="btn btn-success w-100"
+        [disabled]="
+          topicForm.invalid ||
+          topicFile$ === null ||
+          (loadingService.isLoading('add-topic') | async) === true
+        "
+      >
+        <span
+          *ngIf="(loadingService.isLoading('add-topic') | async) === true"
+          class="spinner-border spinner-border-sm me-2"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        {{
+          (loadingService.isLoading("add-topic") | async) === true
+            ? "Saving Topic..."
+            : "Save Topic"
+        }}
+      </button>
+    </div>
+  </form>
+</div>

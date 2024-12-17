@@ -1,0 +1,82 @@
+/* General Styles */
+.containers {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  justify-content: space-evenly;
+  padding: 10px;
+}
+
+h5 {
+  margin-bottom: 25px;
+}
+
+.label {
+  color: #5d6679;
+}
+
+.row {
+  padding: 10px;
+}
+
+.search-input {
+  height: 40px;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+  border: 0.1px solid rgba(0, 0, 0, 0.1);
+}
+
+.row .btn {
+  margin-top: 18px;
+  height: 40px;
+  font-size: 14px;
+  background-color: darkred;
+  color: white;
+  border: 0.1px solid rgba(0, 0, 0, 0.1);
+}
+
+.row .btn svg {
+  margin-right: 10px;
+}
+
+.row .btn:hover {
+  background-color: #660000;
+}
+
+.row .dropdown-menu {
+  width: 250px;
+}
+
+.dropdown-menu svg {
+  margin-right: 10px;
+}
+
+.recordsTable td button {
+  color: white;
+  background-color: darkred;
+}
+
+.recordsTable td button:hover {
+  background-color: #660000;
+}
+
+/* Media Queries */
+@media (max-width: 576px) {
+  .flex-container > * {
+    min-width: 100%;
+    margin-right: 0;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+  .flex-container > * {
+    min-width: calc(50% - 12px);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .flex-container > * {
+    min-width: calc(33.33% - 12px);
+  }
+}

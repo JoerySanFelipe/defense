@@ -1,0 +1,129 @@
+<div class="modal-header bg-success">
+  <h1 class="modal-title fs-5 text-white" id="driverLabel">Add User</h1>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+    (click)="activeModal.close()"></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="userForm" (submit)="submitUser()">
+    <div class="row g-2">
+      <div class="col-md-12">
+        <div class="form-floating">
+          <input class="form-control" type="text" id="name" formControlName="name" placeholder="Juan Dela Cruz" />
+          <label for="name">Fullname</label>
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="col-md">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com" />
+          <label for="email">Email</label>
+        </div>
+        <!-- Display validation error for email -->
+        <div *ngIf="userForm.controls['email'].hasError('email') && userForm.controls['email'].touched"
+          class="text-danger mt-2">
+          Please enter a valid email address.
+        </div>
+      </div>
+
+      <!-- Address Field -->
+      <div class="col-md-12">
+        <div class="form-floating">
+          <input class="form-control" type="text" formControlName="address" id="address"
+            placeholder="Poblacion, Urdaneta, Pangasinan" />
+          <label for="address">Address</label>
+        </div>
+      </div>
+
+      <!-- Phone Number Field -->
+      <div class="col-md-12">
+        <div class="form-floating">
+          <div class="input-group">
+            <span class="input-group-text">+63</span>
+            <input class="form-control" type="text" id="phone" formControlName="phone" placeholder="9123456789" />
+          </div>
+        </div>
+
+        <!-- Display validation error for phone number -->
+        <div *ngIf="userForm.controls['phone'].hasError('pattern') && userForm.controls['phone'].touched"
+          class="text-danger mt-2">
+          Please enter a valid phone number.
+        </div>
+      </div>
+
+      <!-- User Type Field -->
+      <div class="col-md-12">
+        <div class="form-floating">
+          <select class="form-select" id="type" formControlName="type">
+            <option selected>Select User</option>
+            <option *ngFor="let types of userTypes$" [value]="types">
+              {{ types.toUpperCase() }}
+            </option>
+          </select>
+          <label for="type">Enter User Type</label>
+        </div>
+      </div>
+
+      <!-- Document Upload Field -->
+      <div class="col-md-12 mt-3">
+        <label class="form-label">Upload Documents</label>
+        <div class="border border-2 border-dashed border-secondary rounded-3 p-4" (dragover)="onDragOver($event)"
+          (drop)="onDrop($event)" (dragleave)="onDragLeave($event)" (click)="onClickUpload($event)">
+          <div class="d-flex flex-column align-items-center">
+            <i class="fas fa-upload h-8 w-8 text-muted"></i>
+            <label class="mt-2 cursor-pointer">
+              <span class="text-primary">Click to upload</span>
+              <span class="text-muted"> or drag and drop</span>
+              <input #fileInput type="file" class="d-none" (change)="onSelectDocument($event)" multiple
+                accept=".jpg,.jpeg,.png,.pdf" />
+            </label>
+            <p class="text-muted text-small mt-2">
+              JPG, PNG, PDF (max 5MB per file)
+            </p>
+          </div>
+        </div>
+
+        <!-- Display file names -->
+        <div *ngIf="userForm.controls['document'].value && userForm.controls['document'].value.length > 0" class="mt-3">
+          <ul class="list-group">
+            <li *ngFor="let file of userForm.controls['document'].value"
+              class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{ file.name }}</span>
+              <button type="button" (click)="removeDocument(file)" class="btn btn-sm btn-outline-danger">
+                Remove
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Display error messages -->
+        <div
+          *ngIf="userForm.controls['document'].hasError('required') && (userForm.controls['document'].touched || userForm.controls['document'].dirty)"
+          class="text-danger mt-2">
+          Document is required.
+        </div>
+        <div
+          *ngIf="userForm.controls['document'].hasError('fileInvalid') && (userForm.controls['document'].touched || userForm.controls['document'].dirty)"
+          class="text-danger mt-2">
+          Invalid file type. Only JPEG/PNG/PDF are allowed.
+        </div>
+        <div
+          *ngIf="userForm.controls['document'].hasError('fileSizeExceeded') && (userForm.controls['document'].touched || userForm.controls['document'].dirty)"
+          class="text-danger mt-2">
+          File size exceeds 5MB.
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3"
+      [disabled]="(loadingService.isLoading('user') | async) === true || userForm.invalid">
+      <span *ngIf="(loadingService.isLoading('user') | async) === true" class="spinner-border spinner-border-sm me-2"
+        role="status" aria-hidden="true"></span>
+      {{
+      (loadingService.isLoading("user") | async) === true
+      ? "Saving user..."
+      : "Save user"
+      }}
+    </button>
+  </form>
+</div>

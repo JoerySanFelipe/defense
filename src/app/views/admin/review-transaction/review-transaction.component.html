@@ -1,0 +1,170 @@
+<!-- <div class="box text-white">
+  <ngx-json-viewer [json]="_transaction"></ngx-json-viewer>
+</div> -->
+
+<div class="container-fluid d-flex flex-column h-100 gap-3 p-3">
+  <div class="containers p-3 bg-white">
+    <div class="row top">
+      <div class="col">
+        <div class="row">
+          <button class="btn btn-outline-secondary back-btn" (click)="goBack()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-arrow-left-short"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
+              />
+            </svg>
+          </button>
+          <h6 class="order-id">
+            Order ID: <span class="order-id-text">{{ _transaction?.id }}</span>
+          </h6>
+          <h6 class="order-type">
+            Type: <span class="order-text">{{ _transaction?.type }}</span>
+          </h6>
+          <h6 class="">
+            Message: <span class="order-text">{{ _transaction?.message }}</span>
+          </h6>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="row d-flex justify-content-end">
+          <button
+            mat-button
+            class="btn btn-outline-secondary search"
+            (click)="downloadPdf()"
+          >
+            <i class="bi bi-filetype-pdf"></i>Download
+          </button>
+          <div class="d-flex flex-column align-items-end p-3">
+            <h6 class="order-status d-flex justify-content-end">
+              Status:&nbsp;<span
+                class="order-text"
+                [style.color]="
+                  _transaction?.status === 'CANCELLED' ||
+                  _transaction?.status === 'FAILED'
+                    ? 'red'
+                    : 'black'
+                "
+                >{{ _transaction?.status }}</span
+              >
+            </h6>
+            <span class="text-secondary" *ngIf="details$.length !== 0">
+              {{ details$[0].message }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="left p-3">
+          <h5>Customer Info</h5>
+
+          <h6>Name: {{ customerData?.name }}</h6>
+          <h6>Email: {{ customerData?.email }}</h6>
+          <h6>Phone: {{ customerData?.phone }}</h6>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="row mid">
+      <div class="col">
+        <div class="left">
+          <h6 class="label">Delivery</h6>
+          <h6>
+            Receiver: {{ _transaction?.address?.contact?.name ?? "no name" }}
+          </h6>
+          <h6>
+            Phone: {{ _transaction?.address?.contact?.phone ?? "no phone" }}
+          </h6>
+          <h6>Address: {{ displayAddress(_transaction?.address ?? null) }}</h6>
+          <h6 class="label">Driver</h6>
+          <h6>Name: {{ driver$?.name }}</h6>
+          <h6>Phone: {{ driver$?.phone }}</h6>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row d-flex justify-content-end">
+          <h6 class="label">Payment</h6>
+          <h6>
+            Confirmed by: {{ _transaction?.payment?.details?.confirmedBy }}
+          </h6>
+          <h6 *ngIf="_transaction?.type !== 'WALK_IN'">
+            Payment Method: {{ _transaction?.payment?.type }}
+            <button
+              class="btn btn-sm btn-light text-success"
+              *ngIf="_transaction?.payment?.details?.attachmentURL !== ''"
+              (click)="
+                openLinkInNewTab(
+                  _transaction?.payment?.details?.attachmentURL ?? ''
+                )
+              "
+            >
+              View Receipt
+            </button>
+          </h6>
+
+          <h6>Status: {{ _transaction?.payment?.status }}</h6>
+          <h6>
+            Amount:
+            {{ (_transaction?.payment?.amount ?? 0).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'PHP',
+          }) }}
+          </h6>
+
+          <h6>
+            Date:
+            {{
+              _transaction?.payment?.details?.createdAt?.toLocaleDateString()
+            }}
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div class="row p-3">
+      <div class="col-6">
+        <h5>Order Items</h5>
+        <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item"
+            *ngFor="let items of _transaction?.orderList ?? []"
+          >
+            <div class="d-flex gap-2">
+              <img [src]="items?.imageUrl" width="100px" height="100px" />
+              <div class="">
+                <h6>
+                  <b class="text-success">x{{ items.quantity }}</b>
+                  {{ items.productName }}
+                </h6>
+                <span>{{ formatPrice(items.price) }}</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="col-6">
+        <h5>Details</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let items of details$">
+            <h6>
+              <b class="text-success">{{ items.status + "  " }}</b>
+              {{ items.updatedAt.toDate().toDateString() }}
+            </h6>
+
+            <span> {{ items.message }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+.containers {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  justify-content: space-evenly;
+  padding: 10px;
+}
+
+.row .back-btn {
+  width: 70px;
+  height: 40px;
+  margin-left: 10px;
+}
+
+.row.top,
+.row.mid,
+.row.bottom {
+  border-bottom: 1px solid #ccc;
+}
+
+.row .order-id {
+  color: #464e5c;
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 35px;
+}
+
+.order-id-text {
+  color: #0d6efd;
+}
+
+.row .order-type {
+  color: #464e5c;
+  font-size: 18px;
+}
+
+.col .order-status {
+  margin-top: 75px;
+  color: #464e5c;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.btn {
+  width: 150px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.col .left {
+  margin-bottom: 20px;
+  border-right: 1px solid #ccc;
+  border-right-style: dotted;
+}
+
+.row.mid .label {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  color: #464e5c;
+  font-size: 20px;
+  font-weight: bold;
+}
+.row.bottom {
+  padding-bottom: 20px;
+}
+
+.row.bottom .label {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  color: #464e5c;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.col.bottom {
+  margin-top: 50px;
+}
+
+h6 {
+  color: #464e5c;
+}
+
+.driver-details {
+  color: #464e5c;
+}
+
+.total {
+  border-top: 1px solid #ccc;
+  margin-top: 5px;
+  padding-top: 10px;
+  width: 175px;
+  font-weight: bold;
+  font-size: 20px;
+}

@@ -1,0 +1,175 @@
+<ng-container *ngIf="contentState$ | async as state">
+  <div class="container-fluid mh-100 p-3">
+    <div class="d-flex h-100">
+      <div
+        ngbNav
+        #nav="ngbNav"
+        [(activeId)]="activeTab"
+        class="nav-pills flex-column h-100 fw-bold w-25"
+        orientation="vertical"
+      >
+        <ng-container
+          *ngFor="let subject of state.data"
+          [ngbNavItem]="subject.subject.id"
+        >
+          <button ngbNavLink class="text-start">
+            {{ subject.subject.name }}
+          </button>
+          <ng-template ngbNavContent>
+            <div class="ratio ratio-21x9">
+              <img
+                [src]="subject.subject.cover"
+                [alt]="subject.subject.name"
+                width="100%"
+                height="100%"
+                class="rounded"
+              />
+            </div>
+            <div
+              class="d-flex align-items-center justify-content-end p-3 gap-3"
+            >
+              <button
+                class="btn btn-danger"
+                (click)="deleteSubject(subject.subject.id)"
+              >
+                <i class="fa-solid fa-trash me-3"></i>
+                Delete
+              </button>
+              <button
+                class="btn btn-dark"
+                (click)="createTopic(subject.subject)"
+              >
+                Create Topic
+              </button>
+            </div>
+
+            <ul
+              ngbNav
+              #nav="ngbNav"
+              [(activeId)]="active"
+              class="nav-tabs mt-3"
+            >
+              <li [ngbNavItem]="1">
+                <button ngbNavLink>INSECTS</button>
+                <ng-template ngbNavContent>
+                  <ul class="list-group list-group-flush">
+                    <li
+                      class="list-group-item"
+                      *ngFor="
+                        let contents of getInsects(subject.subject.id) | async
+                      "
+                    >
+                      <div
+                        class="container-fluid topics"
+                        (click)="navigateToViewContent(contents.id)"
+                      >
+                        <div class="d-flex align-items-start">
+                          <img
+                            *ngIf="contents.image !== ''"
+                            [src]="contents.image"
+                            [alt]="contents.title"
+                            width="100px"
+                            height="100px"
+                            class="rounded"
+                          />
+                          <div class="p-3 flex-grow-1">
+                            <h5>{{ contents.title }}</h5>
+
+                            <p>{{ contents.desc }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2">
+                <button ngbNavLink>Weeds</button>
+                <ng-template ngbNavContent>
+                  <ul class="list-group list-group-flush">
+                    <li
+                      class="list-group-item"
+                      *ngFor="
+                        let contents of getWeeds(subject.subject.id) | async
+                      "
+                    >
+                      <div
+                        class="container-fluid topics"
+                        (click)="navigateToViewContent(contents.id)"
+                      >
+                        <div class="d-flex align-items-start">
+                          <img
+                            [src]="contents.image"
+                            [alt]="contents.title"
+                            *ngIf="contents.image !== ''"
+                            width="100px"
+                            height="100px"
+                            class="rounded"
+                          />
+                          <div class="p-3 flex-grow-1">
+                            <h5>{{ contents.title }}</h5>
+
+                            <p>{{ contents.desc }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="3">
+                <button ngbNavLink>Diseases</button>
+                <ng-template ngbNavContent>
+                  <ul class="list-group list-group-flush">
+                    <li
+                      class="list-group-item"
+                      *ngFor="
+                        let contents of getDiseases(subject.subject.id) | async
+                      "
+                    >
+                      <div
+                        class="container-fluid topics"
+                        (click)="navigateToViewContent(contents.id)"
+                      >
+                        <div class="d-flex align-items-start">
+                          <img
+                            [src]="contents.image"
+                            [alt]="contents.title"
+                            *ngIf="contents.image !== ''"
+                            width="100px"
+                            height="100px"
+                            class="rounded"
+                          />
+                          <div class="p-3 flex-grow-1">
+                            <h5>{{ contents.title }}</h5>
+
+                            <p>{{ contents.desc }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-template>
+              </li>
+            </ul>
+
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+          </ng-template>
+        </ng-container>
+        <li class="nav-item">
+          <button
+            class="btn btn-outline-danger mt-3 w-100"
+            (click)="createSubject(state.data)"
+          >
+            Create Pestmap
+          </button>
+        </li>
+      </div>
+      <hr />
+      <div
+        [ngbNavOutlet]="nav"
+        class="w-75 h-100 ms-4 bg-white rounded p-3"
+      ></div>
+    </div>
+  </div>
+</ng-container>

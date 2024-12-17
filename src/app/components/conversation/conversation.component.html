@@ -1,0 +1,36 @@
+<div class="d-flex flex-column vh-100 w-100 overflow-hidden">
+  <!-- conversation-list.component.html -->
+
+  <div class="container">
+    <div
+      class="d-flex flex-column gap-2 w-100 align-items-center justify-content-center p-3"
+    >
+      <img
+        src="../../../assets/images/profile_placeholder.jpg"
+        width="100px"
+        height="100px"
+        class="profile"
+      />
+      <h5>Juan Dela Cruz</h5>
+    </div>
+    <div
+      *ngFor="let message of messages"
+      class="message"
+      [ngClass]="{
+        assistant: message.from === 'assistant',
+        user: message.from === 'user'
+      }"
+    >
+      {{ message.text }}
+    </div>
+  </div>
+
+  <div class="chat-textfield">
+    <input
+      [(ngModel)]="messageInput"
+      placeholder="Type your message..."
+      (keydown.enter)="sendMessage()"
+    />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>

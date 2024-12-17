@@ -1,0 +1,32 @@
+<div class="d-flex align-items-center justify-content-center vh-100">
+  <div class="container">
+    <div class="d-flex">
+      <img
+        [src]="
+          _users?.profile || '../../../../assets/images/profile_placeholder.jpg'
+        "
+        (click)="fileInput.click()"
+        style="height: 100px; width: 100px"
+        class="img-fluid rounded-circle"
+        alt="Profile Image"
+      />
+
+      <input
+        type="file"
+        accept="image/*"
+        (change)="onFileChange($event)"
+        style="display: none"
+        #fileInput
+      />
+    </div>
+    <h4>{{ _users?.name }}</h4>
+    <h5>{{ _users?.email }}</h5>
+    <h5>+63 {{ _users?.phone }}</h5>
+    <div class="d-flex gap-3">
+      <button class="btn btn-success" (click)="editProfile()">
+        EDIT PROFILE
+      </button>
+      <button class="btn btn-danger" (click)="logout()">LOGOUT</button>
+    </div>
+  </div>
+</div>

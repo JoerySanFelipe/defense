@@ -1,0 +1,55 @@
+<!-- Modal Header -->
+<div class="modal-header">
+    <h4 class="modal-title">{{ user.type }} - {{ user.name }}</h4>
+    <!-- Close Button with Icon -->
+    <button type="button" class="btn-close" (click)="activeModal.close()" aria-label="Close"></button>
+  </div>
+  
+  <!-- Modal Body -->
+  <div class="modal-body">
+    <!-- Email Section -->
+    <div class="mb-3">
+      <strong>Email: </strong>
+      <span class="text-muted">{{ user.email }}</span>
+    </div>
+  
+    <!-- Phone Section -->
+    <div class="mb-3">
+      <strong>Phone: </strong>
+      <span class="text-muted">{{ user.phone }}</span>
+    </div>
+  
+    <!-- Address Section -->
+    <div class="mb-3">
+      <strong>Address: </strong>
+      <span class="text-muted">{{ user.address }}</span>
+    </div>
+  
+    <!-- Documents Section -->
+    <div class="mb-3">
+      <strong>Documents: </strong>
+      <div *ngIf="documentLinks.length > 0; else noDocs">
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-file-earmark-text"></i> Select Document
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li *ngFor="let link of documentLinks; let i = index">
+              <a class="dropdown-item" [href]="link" target="_blank">
+                <i class="bi bi-file-earmark"></i> Document {{ i + 1 }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <ng-template #noDocs>
+        <p class="text-muted">No documents available</p>
+      </ng-template>
+    </div>
+  </div>
+  
+  <!-- Modal Footer -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close()">Close</button>
+  </div>
+  

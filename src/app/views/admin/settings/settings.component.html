@@ -1,0 +1,284 @@
+<div class="container-fluid p-3" style="min-height: 100%">
+  <div class="d-flex h-100 flex-column gap-3">
+    <div class="containers p-3">
+      <h5><b>Settings</b></h5>
+      <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="target-sales-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#target-sales-pane"
+            type="button"
+            role="tab"
+            aria-controls="target-sales-pane"
+            aria-selected="true"
+          >
+            Target Sales
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="payments-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#payments-pane"
+            type="button"
+            role="tab"
+            aria-controls="payments-pane"
+            aria-selected="false"
+          >
+            Payments
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content" id="settingsTabsContent">
+        <div
+          class="tab-pane fade show active"
+          id="target-sales-pane"
+          role="tabpanel"
+          aria-labelledby="target-sales-tab"
+        >
+          <!-- Target Sales -->
+          <div class="target-sales w-100">
+            <div class="d-flex align-items-center justify-content-between">
+              <h5></h5>
+              <div class="top-buttons d-flex gap-1">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      class="bi bi-filter"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"
+                      />
+                    </svg>
+                    Filter By Year
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        (click)="getTargetSalesByYear('2024')"
+                        >2024</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        (click)="getTargetSalesByYear('2025')"
+                        >2025</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        (click)="getTargetSalesByYear('2026')"
+                        >2026</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        (click)="getTargetSalesByYear('2027')"
+                        >2027</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        (click)="getTargetSalesByYear('2028')"
+                        >2028</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        (click)="getTargetSalesByYear('2029')"
+                        >2029</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        (click)="getTargetSalesByYear('2030')"
+                        >2030</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <app-add-target-sales></app-add-target-sales>
+              </div>
+            </div>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="col">#</th>
+                  <th class="col">Target</th>
+                  <th class="col">Month</th>
+                  <th class="col">Year</th>
+                  <th class="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let target of targetSales; index as index">
+                  <td class="col">{{ index + 1 }}</td>
+                  <td class="col">
+                    {{
+                      target.sale.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP"
+                      })
+                    }}
+                  </td>
+                  <td class="col">{{ target.month }}</td>
+                  <td class="col">{{ target.year }}</td>
+                  <td class="col">
+                    <button
+                      class="btn btn-danger"
+                      (click)="deleteTargetSales(target.id)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-calendar-x"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M6.146 7.146a.5.5 0 0 1 .708 0L8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 0 1 0-.708"
+                        />
+                        <path
+                          d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="payments-pane"
+          role="tabpanel"
+          aria-labelledby="payments-tab"
+        >
+          <!-- Payments -->
+          <div class="payments-qr">
+            <div class="row bottom-box">
+              <div
+                class="child-container"
+                *ngIf="defaultPaymentMethod$ | async as default"
+              >
+                <div
+                  class="card p-3"
+                  style="width: 100%; height: 100%"
+                  *ngIf="default !== null"
+                >
+                  <img
+                    [src]="default.qrCode"
+                    class="card-img-top"
+                    height="60%"
+                    width="100%"
+                    alt="product image"
+                  />
+                  <div class="card-body">
+                    <h6 class="card-title fs-6" id="product-title">
+                      Name : {{ default.name }}
+                    </h6>
+                    <h5 class="card-text text-success fs-6">
+                      Phone : {{ default.phone }}
+                    </h5>
+                    <span class="badge text-bg-danger">Default</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="col title-text">
+                <img
+                  [src]="paymentQrs.length > 0 ? paymentQrs[0].qr : null"
+                  width="250px"
+                  height="370px"
+                  *ngIf="paymentQrs.length > 0"
+                  id="current-qr"
+                  alt="current-qr"
+                />
+                <h6>Current Qr Code</h6>
+                <p>
+                  This quick response (QR) image serves as the code used for
+                  GCash payments.
+                </p>
+              </div> -->
+              <div
+                class="d-flex align-items-center justify-content-between p-3"
+              >
+                <div class="d-flex flex-column gap-1">
+                  <h6>Current Qr Code</h6>
+                  <p>
+                    This quick response (QR) image serves as the code used for
+                    GCash payments.
+                  </p>
+                </div>
+                <button class="btn btn-primary" (click)="uploadPayment()">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-plus me-3"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+                    />
+                  </svg>
+                  Upload Qr Code
+                </button>
+              </div>
+            </div>
+            <div class="container">
+              <div class="flex-container">
+                <div class="child-container" *ngFor="let payment of qrCodes$">
+                  <div
+                    class="card p-3"
+                    style="width: 100%; height: 100%"
+                    (click)="updatePaymentDefault(payment.id)"
+                  >
+                    <img
+                      [src]="payment.qrCode"
+                      class="card-img-top"
+                      height="60%"
+                      width="100%"
+                      alt="product image"
+                    />
+                    <div class="card-body">
+                      <h6 class="card-title fs-6" id="product-title">
+                        Name : {{ payment.name }}
+                      </h6>
+                      <h5 class="card-text text-success fs-6">
+                        Phone : {{ payment.phone }}
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

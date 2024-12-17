@@ -1,0 +1,112 @@
+<!-- <div class="box text-white">
+  <ngx-json-viewer [json]="_audit"></ngx-json-viewer>
+</div> -->
+<div class="container-fluid d-flex flex-column h-100 gap-3 p-3">
+  <div class="containers p-3">
+    <div class="row top">
+      <div class="col">
+        <div class="row">
+          <button
+            class="btn btn-outline-secondary back-btn"
+            (click)="location.back()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-arrow-left-short"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
+              />
+            </svg>
+          </button>
+          <h6 class="label-audit">
+            Audit No: <span class="audit-text">{{ _audit?.id }}</span>
+          </h6>
+        </div>
+      </div>
+      <div class="col d-flex justify-content-end">
+        <div class="row">
+          <button mat-button class="btn btn-outline-secondary search">
+            <i class="bi bi-filetype-pdf"></i>Download
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mid">
+      <div class="col">
+        <h6 class="label">Primary Details</h6>
+        <h6>Component: {{ _audit?.component }}</h6>
+        <h6>Action: {{ _audit?.action }}</h6>
+        <h6>
+          Timestamp: {{ _audit?.timestamp | date : "MMM dd, yyyy hh:mm a" }}
+        </h6>
+        <h6>Description: {{ _audit?.details }}</h6>
+      </div>
+      <div class="col">
+        <h6 class="label">User Details</h6>
+        <h6>Email: {{ _audit?.email }}</h6>
+        <h6>Role: {{ _audit?.role }}</h6>
+      </div>
+    </div>
+    <!-- <h5 class="mt-3 mb-3">Parameters</h5>
+    <div
+      class="box text-white p-3 rounded"
+      style="background-color: var(--bg-color)"
+    >
+      <ngx-json-viewer [json]="_audit?.payload"></ngx-json-viewer>
+    </div> -->
+    <!-- 
+    <div
+      *ngIf="_audit?.component === 'TRANSACTION'"
+      class="transaction-details"
+    >
+      <div class="row" *ngIf="_audit?.payload && _audit?.payload.details">
+        <div class="col" *ngFor="let payloadDetail of _audit?.payload?.details">
+          <h6 class="label">Additional Details</h6>
+          <h6>Type: {{ _audit?.payload?.type }}</h6>
+          <h6>
+            Message: <i>"{{ payloadDetail.message }}"</i>
+          </h6>
+          <h6>Payment Status: {{ _audit?.payload?.payment?.status }}</h6>
+        </div>
+        <div class="col" *ngIf="_audit?.payload && _audit?.payload.orderList">
+          <h6 class="label">Product Details</h6>
+          <div class="col" *ngFor="let product of _audit?.payload?.orderList">
+            <h6>Name: {{ product.productName }}</h6>
+            <h6>Quantity: {{ product.quantity }}</h6>
+            <h6>Amount: {{ product.price * product.quantity }}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="_audit?.component === 'INVENTORY'" class="inventory-details">
+      <div class="row">
+        <div class="col">
+          <h6 class="label">Product Details</h6>
+          <h6>Name: {{ _audit?.payload?.name }}</h6>
+          <h6>Category: {{ _audit?.payload?.category }}</h6>
+          <h6>Image:</h6>
+          <div>
+            <img src="{{ _audit?.payload?.images?.[0] }}" alt="product img" />
+          </div>
+        </div>
+        <div class="col">
+          <h6 class="label">Stock and Pricing Details</h6>
+          <div class="col">
+            <h6>Stocks Added: {{ _audit?.payload?.stocks }}</h6>
+            <h6>Cost: {{ _audit?.payload?.cost }}</h6>
+            <h6>Price: {{ _audit?.payload?.price }}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  </div>
+</div>

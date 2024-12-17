@@ -1,0 +1,443 @@
+<!-- Container for Transactions Component -->
+<div class="container-fluid bg-white">
+  <!-- Header Section -->
+  <div class="d-flex gap-3 align-items-center">
+    <!-- Back Button -->
+    <button class="btn btn-outline-secondary" (click)="location.back()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        class="bi bi-arrow-left-short"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
+        />
+      </svg>
+    </button>
+    <!-- Heading for the page -->
+    <h5>Transactions</h5>
+  </div>
+
+  <!-- Tabs Section -->
+  <div style="width: 100%; flex-grow: 1">
+    <!-- Navigation Tabs -->
+    <div class="containerTabs" style="width: 100%">
+      <div class="dropdown">
+        <button class="cashierName">
+          <b>Cashier:</b> {{ _users?.name ?? "no cashier" }}
+        </button>
+        <div class="dropdown-content">
+          <a>
+            <h1 class="title-tools" style="color: black">
+              <b>Date: </b>{{ getCurrentDate() | date : "shortDate" }}
+            </h1>
+          </a>
+          <a>
+            <h1 class="title-tools" style="color: black">
+              <b>Transactions: </b> {{ recentTransactions.length }}
+            </h1>
+          </a>
+          <a>
+            <h1 class="title-tools" style="color: black">
+              <b>Sales: </b
+              >{{ calculateTotalSales(recentTransactions) | currency : "PHP" }}
+            </h1>
+          </a>
+        </div>
+      </div>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <!-- Tab for Recent transactions -->
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="home-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#home-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="home-tab-pane"
+            aria-selected="true"
+          >
+            Recent
+          </button>
+        </li>
+
+        <!-- Tab for All Transactions -->
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="profile-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#profile-tab-pane"
+            type="button"
+            role="tab"
+            aria-controls="profile-tab-pane"
+            aria-selected="false"
+          >
+            All
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tab Content Section -->
+    <div class="tab-content h-100 border-1" id="myTabContent">
+      <!-- Content for Recent transactions -->
+      <div
+        class="tab-pane fade show active"
+        id="home-tab-pane"
+        role="tabpanel"
+        aria-labelledby="home-tab"
+        tabindex="0"
+      >
+        <!-- Check if there are transactions made today -->
+        <ng-container
+          *ngIf="recentTransactions.length > 0; else noTransactions"
+        >
+          <div class="tools-button">
+            <!-- <button mat-button class="btn btn-outline-secondary export-excel" (click)="exportToExcel()">
+              <i class="bi bi-filetype-xlsx"></i> Download as Excel
+            </button> -->
+            <div ngbDropdown>
+              <button
+                type="button"
+                class="btn btn-lg btn-outline-secondary"
+                id="dropdownConfig"
+                ngbDropdownToggle
+              >
+                Generate Report
+              </button>
+              <div
+                ngbDropdownMenu
+                aria-labelledby="dropdownConfig"
+                class="w-100"
+              >
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(0, 'Pending')"
+                >
+                  Pending
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(1, 'Cancelled')"
+                >
+                  Cancelled
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(2, 'Accepted')"
+                >
+                  Accepted
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(3, 'To Deliver')"
+                >
+                  To Deliver
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(4, 'Pick up')"
+                >
+                  Pick Up
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(5, 'Out of Delivery')"
+                >
+                  Out of Delivery
+                </button>
+                <button ngbDropdownItem (click)="printTransaction(6, 'Failed')">
+                  Failed
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(7, 'Completed')"
+                >
+                  Completed
+                </button>
+
+                <div class="dropdown-divider"></div>
+                <button ngbDropdownItem (click)="printByType(0, 'Walk In')">
+                  Walk in
+                </button>
+                <button ngbDropdownItem (click)="printByType(1, 'Pick Up')">
+                  Pick up
+                </button>
+                <button ngbDropdownItem (click)="printByType(2, 'Delivery')">
+                  Delivery
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="tools-search"></div>
+
+          <div class="recordsTable">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Invoice No.</th>
+                  <!-- <th>Customer</th> -->
+                  <th>Product</th>
+                  <th>Order Value</th>
+                  <th>Timestamp</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Loop through recent transactions -->
+                <tr *ngFor="let element of recentTransactions">
+                  <td>{{ element.id }}</td>
+                  <!-- <td>
+                    <p>{{ "---" }}</p>
+                  </td> -->
+                  <td>
+                    <!-- Loop through orderList to display all products -->
+                    <ng-container
+                      *ngFor="
+                        let orderItem of element.orderList;
+                        let last = last
+                      "
+                    >
+                      <p>
+                        {{ orderItem.productName || "---" }} x
+                        {{ orderItem.quantity || 0 }}
+                      </p>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container
+                      *ngIf="element.orderList && element.orderList.length > 0"
+                    >
+                      <!-- Calculate total order value -->
+                      <p>
+                        {{
+                          calculateTotalOrderValue(element.orderList)
+                            | currency : "PHP"
+                        }}
+                      </p>
+                    </ng-container>
+                  </td>
+                  <td>{{ convertTimestamp(element.createdAt) }}</td>
+                  <td>
+                    <button
+                      class="btn btn-outline-secondary"
+                      (click)="navigateToViewTransaction(element.id)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-eye-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                        <path
+                          d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+
+        <!-- Display a message if there are no transactions made today -->
+        <ng-template #noTransactions>
+          <p>No transactions made today.</p>
+        </ng-template>
+      </div>
+
+      <!-- Content for All Transactions -->
+      <div
+        class="tab-pane fade"
+        id="profile-tab-pane"
+        role="tabpanel"
+        aria-labelledby="profile-tab"
+        tabindex="0"
+      >
+        <ng-container>
+          <div class="tools-button">
+            <!-- <button mat-button class="btn btn-outline-secondary export-excel" (click)="exportToExcel()">
+              <i class="bi bi-filetype-xlsx"></i> Download as Excel
+            </button> -->
+            <div ngbDropdown>
+              <button
+                type="button"
+                class="btn btn-lg btn-outline-secondary"
+                id="dropdownConfig"
+                ngbDropdownToggle
+              >
+                Generate Report
+              </button>
+              <div
+                ngbDropdownMenu
+                aria-labelledby="dropdownConfig"
+                class="w-100"
+              >
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(0, 'Pending')"
+                >
+                  Pending
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(1, 'Cancelled')"
+                >
+                  Cancelled
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(2, 'Accepted')"
+                >
+                  Accepted
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(3, 'To Deliver')"
+                >
+                  To Deliver
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(4, 'Pick up')"
+                >
+                  Pick Up
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(5, 'Out of Delivery')"
+                >
+                  Out of Delivery
+                </button>
+                <button ngbDropdownItem (click)="printTransaction(6, 'Failed')">
+                  Failed
+                </button>
+                <button
+                  ngbDropdownItem
+                  (click)="printTransaction(7, 'Completed')"
+                >
+                  Completed
+                </button>
+
+                <div class="dropdown-divider"></div>
+                <button ngbDropdownItem (click)="printByType(0, 'Walk In')">
+                  Walk in
+                </button>
+                <button ngbDropdownItem (click)="printByType(1, 'Pick Up')">
+                  Pick up
+                </button>
+                <button ngbDropdownItem (click)="printByType(2, 'Delivery')">
+                  Delivery
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="tools-search">
+            <div class="search-bar">
+              <div class="search-input-container">
+                <input
+                  type="text"
+                  class="form-control mb-3"
+                  placeholder="Search invoice, product name...."
+                  [(ngModel)]="searchQuery"
+                  (input)="applyFilter()"
+                  style="
+                    width: 60%;
+                    padding-left: 50px;
+                    background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 fill=%22currentColor%22 class=%22bi bi-search%22 viewBox=%220 0 16 16%22%3E%3Cpath d=%22M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0%22/%3E%3C/svg%3E');
+                    background-size: 20px;
+                    background-position: 10px center;
+                    background-repeat: no-repeat;
+                  "
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="recordsTable">
+            <!-- Table for displaying All transaction details -->
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Invoice No.</th>
+                  <!-- <th>Customer</th> -->
+                  <th>Product</th>
+                  <th>Order Value</th>
+                  <th>Timestamp</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Loop through all transactions -->
+                <tr *ngFor="let element of dataSource">
+                  <td>{{ element.id }}</td>
+                  <!-- <td>
+                    <p>{{ "---" }}</p>
+                  </td> -->
+                  <td>
+                    <!-- Loop through orderList to display all products -->
+                    <ng-container
+                      *ngFor="
+                        let orderItem of element.orderList;
+                        let last = last
+                      "
+                    >
+                      <p>
+                        {{ orderItem.productName || "---" }} x
+                        {{ orderItem.quantity || 0 }}
+                      </p>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container
+                      *ngIf="element.orderList && element.orderList.length > 0"
+                    >
+                      <!-- Calculate total order value -->
+                      <p>
+                        {{
+                          calculateTotalOrderValue(element.orderList)
+                            | currency : "PHP"
+                        }}
+                      </p>
+                    </ng-container>
+                  </td>
+                  <td>{{ convertTimestamp(element.createdAt) }}</td>
+                  <td>
+                    <button
+                      class="btn btn-outline-secondary"
+                      (click)="navigateToViewTransaction(element.id)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-eye-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                        <path
+                          d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

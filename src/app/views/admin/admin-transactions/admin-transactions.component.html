@@ -1,0 +1,111 @@
+<div class="container-fluid h-100 p-3">
+  <div class="box d-flex flex-column gap-1 w-100 overflow-y-auto">
+    <div class="d-flex align-items-center justify-content-between p-3 w-100">
+      <h5><b>Transactions</b></h5>
+      <div class="d-flex gap-2">
+        <!-- Search Input -->
+        <div class="input-group" style="width: 300px">
+          <input type="text" class="search-input w-100" placeholder="Search Transaction id..." [(ngModel)]="searchText"
+            (input)="search()" />
+        </div>
+
+        <!-- Transaction Type Filter -->
+        <div class="input-group" style="width: 200px">
+          <select class="form-select" [(ngModel)]="selectedType" (change)="search()">
+            <option value="">All Types</option>
+            <option value="WALK_IN">Walk in</option>
+            <option value="PICK_UP">Pick up</option>
+            <option value="DELIVERY">Delivery</option>
+          </select>
+        </div>
+
+        <!-- Transaction Status Filter -->
+        <div class="input-group" style="width: 200px">
+          <select class="form-select" [(ngModel)]="selectedStatus" (change)="search()">
+            <option value="">All Statuses</option>
+            <option value="PENDING">Pending</option>
+            <option value="CANCELLED">Cancelled</option>
+            <option value="ACCEPTED">Accepted</option>
+            <option value="READY_TO_DELIVER">Ready to Deliver</option>
+            <option value="READY_TO_PICK_UP">Ready to Pick Up</option>
+            <option value="OUT_OF_DELIVER">Out For Delivery</option>
+            <option value="FAILED">Failed</option>
+            <option value="COMPLETED">Completed</option>
+          </select>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div class="input-group" style="width: 300px">
+          <input type="date" class="form-control" [(ngModel)]="startDate" (change)="search()" placeholder="Start Date" />
+          <input type="date" class="form-control" [(ngModel)]="endDate" (change)="search()" placeholder="End Date" />
+        </div>
+
+        <!-- Report Generation Button -->
+        <div ngbDropdown>
+          <button type="button" class="btn btn-lg btn-outline-secondary" (click)="generateReport()">
+            Export
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <table class="table table-hover table-borderless m-3">
+      <thead>
+        <tr>
+          <th scope="col">Invoice ID</th>
+          <th scope="col">Type</th>
+          <th scope="col">Order Items</th>
+          <th scope="col">Payment</th>
+          <th scope="col">Status</th>
+          <th scope="col">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions$ | dateRangeFilter:startDate:endDate" (click)="navigateToViewTransaction(transaction.id)">
+          <td scope="row">{{ transaction.id }}</td>
+          <td>{{ transaction.type }}</td>
+          <td>{{ transaction.orderList.length }}</td>
+          <td>
+            {{
+              transaction.payment.amount.toLocaleString("en-us", {
+                style: "currency",
+                currency: "PHP"
+              })
+            }} 
+            <!-- Conditionally show payment type if not WALK_IN -->
+            <ng-container *ngIf="transaction.type !== 'WALK_IN'">
+              - {{ transaction.payment.type }}
+            </ng-container>
+            <span class="badge" [style.backgroundColor]="
+              transaction.payment.status === 'PAID' ? 'green' : 'yellow'
+            " [style.color]="
+              transaction.payment.status === 'PAID' ? 'white' : 'black'
+            ">{{ transaction.payment.status }}</span>
+          </td>
+          <td>
+            <span class="badge" [style.backgroundColor]="getBackgroundColor(transaction.status)"
+              [style.color]="getTextColor(transaction.status)">{{ transaction.status }}</span>
+          </td>
+          <td>{{ transaction.createdAt.toDateString() }}</td>
+        </tr>
+        <tr *ngIf="transactions$.length === 0">
+          <td colspan="6" style="text-align: center">No transactions found</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+        (pageChange)="refreshTransactions()">
+      </ngb-pagination>
+
+      <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshTransactions()">
+        <option [ngValue]="20">20 items per page</option>
+        <option [ngValue]="30">30 items per page</option>
+        <option [ngValue]="50">50 items per page</option>
+      </select>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <h1 class="modal-title fs-5" id="driverLabel">Select Driver</h1>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="modal"
+    aria-label="Close"
+    (click)="activeModal.close()"
+  ></button>
+</div>
+<div class="modal-body">
+  <ul class="list-group list-group-flush">
+    <li
+      class="list-group-item"
+      *ngFor="let driver of _drivers"
+      (click)="selectDriver(driver)"
+    >
+      <div class="d-flex gap-2">
+        <img
+          [src]="driver.profile || '../../../assets/images/profile.jpg'"
+          class="img-thumbnail"
+          alt="Profile Image"
+          width="60px"
+          height="60px"
+        />
+
+        <div class="">
+          <h5>{{ driver.name }}</h5>
+          <h5>+63 {{ driver.phone }}</h5>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    data-bs-dismiss="modal"
+    (click)="activeModal.close()"
+  >
+    Cancel
+  </button>
+</div>
